@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Ситуационные задачи — Анатомия</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0f14;
+  --surface: #161920;
+  --card: #1c2028;
+  --border: #2a2f3d;
+  --accent: #6c7fff;
+  --accent2: #a78bfa;
+  --gold: #f4c97a;
+  --teal: #34d9c3;
+  --rose: #f87171;
+  --text: #eef0f6;
+  --muted: #7a8099;
+  --subtle: #3a3f52;
+  --r: 14px;
+  --r-sm: 8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* BG glow */
+body::before {
+  content: '';
+  position: fixed;
+  top: -120px;
+  left: -80px;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(108,127,255,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -100px;
+  right: -60px;
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(167,139,250,0.1) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* HEADER */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(13,15,20,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px 12px;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.logo-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.logo-text {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.byline-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold);
+  background: rgba(244,201,122,0.12);
+  border: 1px solid rgba(244,201,122,0.25);
+  border-radius: 20px;
+  padding: 3px 10px;
+  letter-spacing: 0.3px;
+}
+
+/* Search */
+.search-box {
+  position: relative;
+}
+
+.search-box svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+  width: 16px;
+  height: 16px;
+}
+
+.search-box input {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px 10px 38px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-box input::placeholder { color: var(--muted); }
+.search-box input:focus { border-color: var(--accent); }
+
+/* Stats bar */
+.stats-bar {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.stats-bar::-webkit-scrollbar { display: none; }
+
+.stat-chip {
+  flex-shrink: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.stat-chip .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: background 0.18s;
+}
+
+.stat-chip.active {
+  background: rgba(108,127,255,0.15);
+  border-color: rgba(108,127,255,0.5);
+  color: var(--accent);
+}
+.stat-chip.active .dot { background: var(--accent); }
+
+/* Main content */
+.main {
+  padding: 14px 12px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.section-label {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  padding: 0 4px;
+  margin-bottom: 10px;
+}
+
+.count-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+  margin-bottom: 12px;
+}
+
+.count-num {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.count-num span { color: var(--accent); }
+
+/* Task cards */
+.task-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.task-card.open {
+  border-color: rgba(108,127,255,0.4);
+}
+
+.task-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.num-badge {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(108,127,255,0.2), rgba(167,139,250,0.2));
+  border: 1px solid rgba(108,127,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 1px;
+}
+
+.task-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.topic-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 4px;
+  opacity: 0.85;
+}
+
+.task-q {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--muted);
+  margin-top: 4px;
+  transition: transform 0.25s cubic-bezier(.4,0,.2,1);
+  width: 18px;
+  height: 18px;
+}
+
+.task-card.open .chevron { transform: rotate(180deg); color: var(--accent); }
+
+/* Answer panel */
+.task-ans {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(.4,0,.2,1);
+}
+
+.task-ans-inner {
+  border-top: 1px solid var(--border);
+  padding: 14px;
+}
+
+.ans-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ans-section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(108,127,255,0.2);
+}
+
+.ans-text {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: #c8ccdb;
+  margin-bottom: 12px;
+}
+
+.key-block {
+  background: rgba(244,201,122,0.07);
+  border: 1px solid rgba(244,201,122,0.2);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.key-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background: rgba(244,201,122,0.15);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  margin-top: 1px;
+}
+
+.key-text {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* Empty state */
+.empty {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--muted);
+}
+
+.empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.5; }
+.empty-text { font-size: 14px; font-weight: 500; }
+
+/* Progress bar */
+.progress-wrap {
+  padding: 12px 16px 4px;
+}
+.prog-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.prog-bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.task-card {
+  animation: fadeUp 0.3s ease both;
+}
+
+.task-card:nth-child(1) { animation-delay: 0.02s; }
+.task-card:nth-child(2) { animation-delay: 0.04s; }
+.task-card:nth-child(3) { animation-delay: 0.06s; }
+.task-card:nth-child(4) { animation-delay: 0.08s; }
+.task-card:nth-child(5) { animation-delay: 0.1s; }
+.task-card:nth-child(6) { animation-delay: 0.12s; }
+.task-card:nth-child(7) { animation-delay: 0.14s; }
+.task-card:nth-child(8) { animation-delay: 0.16s; }
+
+/* footer */
+.footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(13,15,20,0.95);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border);
+  padding: 10px 16px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.footer-name {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent2);
+}
+
+/* Topic color coding */
+.topic-color-0 { color: #34d9c3; }
+.topic-color-1 { color: #a78bfa; }
+.topic-color-2 { color: #f87171; }
+.topic-color-3 { color: #f4c97a; }
+.topic-color-4 { color: #6c7fff; }
+.topic-color-5 { color: #4ade80; }
+.topic-color-6 { color: #fb923c; }
+.topic-color-7 { color: #38bdf8; }
+.topic-color-8 { color: #e879f9; }
+.topic-color-9 { color: #a3e635; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-top">
+    <div class="logo-pill">
+      <div class="logo-icon">🫁</div>
+      <div class="logo-text">АНАТОМИЯ</div>
+    </div>
+    <div class="byline-badge">by Sultanov</div>
+  </div>
+  <div class="search-box">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input type="text" id="searchInput" placeholder="Поиск задачи или темы..." oninput="filter()">
+  </div>
+</header>
+
+<div class="stats-bar" id="filterRow"></div>
+
+<div class="progress-wrap">
+  <div class="prog-label">
+    <span id="openedLabel">Открыто: 0</span>
+    <span id="totalLabel">из 25</span>
+  </div>
+  <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+</div>
+
+<main class="main">
+  <div class="count-bar">
+    <div class="section-label">Ситуационные задачи</div>
+    <div class="count-num">Показано: <span id="countNum">25</span></div>
+  </div>
+  <div id="taskList"></div>
+</main>
+
+<footer class="footer">
+  <div class="footer-text">Подготовка к сессии •</div>
+  <div class="footer-name">Sultanov</div>
+</footer>
+
+<script>
+const tasks = [
+  {n:1, topic:"Полость рта", q:"У новорождённого при первом кормлении обнаружено вытекание молока из носа. Какой врождённый дефект ротовой полости приводит к такому осложнению?",
+   ans:"Данный симптом характерен для незаращения твёрдого нёба — расщелины нёба (palatoschisis, «волчья пасть»). В норме твёрдое нёбо образует разделение между ротовой и носовой полостями. При его незаращении возникает сообщение между этими полостями, вследствие чего молоко при сосании проникает в носовую полость и вытекает через ноздри. Это один из наиболее частых врождённых пороков развития лицевого черепа.",
+   key:"Незаращение твёрдого нёба (palatoschisis) → сообщение ротовой и носовой полостей."},
+  {n:2, topic:"Зуб", q:"Студент, разгрызая орех, сломал зуб и испытывает сильнейшую боль. Повреждение какой ткани зуба её вызывает?",
+   ans:"Сильнейшая боль возникает при повреждении пульпы зуба (pulpa dentis) — рыхлой соединительной ткани, заполняющей полость зуба и корневые каналы. Пульпа богата нервными волокнами (ветви тройничного нерва) и кровеносными сосудами. При переломе коронки зуба происходит вскрытие полости зуба и обнажение пульпы, что вызывает интенсивную боль.",
+   key:"Пульпа зуба → ветви тройничного нерва → острая боль."},
+  {n:3, topic:"Слюнные железы", q:"Хирургу необходимо вскрыть гнойник околоушной слюнной железы. Почему нельзя использовать вертикальные разрезы?",
+   ans:"Через толщу околоушной слюнной железы (glandula parotis) проходят ветви лицевого нерва (n. facialis), которые выходят через шилососцевидное отверстие и разветвляются веерообразно, образуя «гусиную лапку» (pes anserinus). Ветви расположены преимущественно вертикально. Вертикальный разрез неизбежно пересечёт эти ветви, вызвав паралич мимических мышц. Поэтому разрезы выполняют горизонтально — параллельно ходу ветвей n. facialis.",
+   key:"Ветви n. facialis идут вертикально → вертикальный разрез = паралич мимики."},
+  {n:4, topic:"Глотка", q:"Артиллерист в момент выстрела пушки открывает рот. С какой особенностью строения глотки это связано?",
+   ans:"Открывание рта позволяет выровнять давление по обе стороны барабанной перепонки через слуховую трубу (tuba auditiva Eustachii). Труба соединяет среднее ухо с носоглоткой и открывается в ней на уровне нижней носовой раковины. При открытии рта мышцы (m. tensor veli palatini, m. levator veli palatini) расширяют устье трубы, уравнивая давление. Это предотвращает баротравму барабанной перепонки при резкой звуковой волне.",
+   key:"Слуховая труба открывается в носоглотке. Открытие рта → уравнивание давления → защита барабанной перепонки."},
+  {n:5, topic:"Органы брюшной полости", q:"Пострадавший с кровавой рвотой, раненный в левую подрёберную область. Какой орган пострадал?",
+   ans:"В левой подрёберной области (regio hypochondriaca sinistra) располагается желудок — его дно и тело, а также селезёнка. Кровавая рвота (haematemesis) свидетельствует о кровотечении в просвет желудка или пищевода. С учётом локализации ранения наиболее вероятно повреждение желудка. При его ранении кровь изливается в просвет, вызывая кровавую рвоту. Селезёнка кровавой рвоты не даёт.",
+   key:"Пострадал желудок. Кровавая рвота = кровь в просвет желудка."},
+  {n:6, topic:"Тонкая кишка", q:"Кишечная непроходимость от перекручивания петель тонкой кишки. Почему перекручивание бывает в среднем отделе?",
+   ans:"Тонкая кишка прикреплена к задней стенке брюшной полости брыжейкой (mesenterium), имеющей форму веера. Корень брыжейки узкий и короткий (15–16 см), тогда как кишечный край достигает 7–8 м. Это несоответствие создаёт большую подвижность петель в среднем (тощекишечном) отделе, где брыжейка наиболее длинная. Это предрасполагает к завороту (volvulus). Двенадцатиперстная кишка и терминальный отдел подвздошной фиксированы значительно лучше.",
+   key:"Брыжейка тонкой кишки наиболее длинна в среднем отделе → максимальная подвижность → заворот."},
+  {n:7, topic:"Толстая кишка", q:"Ранение восходящей ободочной кишки — содержимое попало в щель между кишкой и стенкой живота. Назовите пространство. Куда затекает? Изменилась ли ситуация при ранении слева?",
+   ans:"Эта щель — правый боковой канал (canalis lateralis dexter). Содержимое может затекать: вверх — в подпечёночное пространство и правый поддиафрагмальный карман; вниз — в правую подвздошную ямку и малый таз. При аналогичном ранении слева (нисходящая ободочная кишка) содержимое попадёт в левый боковой канал (canalis lateralis sinister). Особенность: левый канал снизу ограничен корнем брыжейки сигмовидной кишки и менее сообщается с полостью малого таза.",
+   key:"Правый боковой канал → вверх к печени, вниз к тазу. Слева — левый канал, менее открыт к тазу."},
+  {n:8, topic:"Бронхи", q:"Инородное тело попало в дыхательные пути. В какой бронх с большей вероятностью?",
+   ans:"Инородное тело с большей вероятностью попадёт в правый главный бронх (bronchus principalis dexter). Он шире, короче (2–3 см) и отходит от трахеи под меньшим углом (~15–20°) — почти является её продолжением. Левый главный бронх длиннее (4–5 см) и отходит под бо́льшим углом (~40–45°). По законам физики инородные тела при аспирации следуют по более прямому пути и попадают в правый бронх.",
+   key:"Правый бронх: шире, короче, угол ~15° → инородное тело попадает в него."},
+  {n:9, topic:"Трахея", q:"Разрушена задняя стенка трахеи воспалением. На какой орган перейдёт процесс?",
+   ans:"Задняя стенка трахеи (paries membranaceus) лишена хрящей и прилежит непосредственно к передней стенке пищевода. Между ними нет значительной клетчаточной прослойки. При деструкции задней стенки воспаление прямым контактным путём распространится на пищевод. Это может привести к образованию трахео-пищеводного свища (fistula tracheo-oesophagea) — грозного осложнения, при котором содержимое пищевода попадает в трахею.",
+   key:"Задняя стенка трахеи граничит с пищеводом → трахео-пищеводный свищ."},
+  {n:10, topic:"Лёгкие", q:"Почему доступ к нижней доле левого лёгкого труднее, чем к нижней доле правого?",
+   ans:"Нижняя доля левого лёгкого частично прикрыта сердцем (cor), смещённым влево, которое занимает значительную часть левой плевральной полости. Левое лёгкое меньше правого, имеет сердечную вырезку (incisura cardiaca). Левый купол диафрагмы расположен несколько ниже правого. Совокупность этих факторов — близость сердца, меньший объём лёгкого и необходимость обходить сердечные структуры — делает доступ труднее.",
+   key:"Нижняя доля левого лёгкого прикрыта сердцем, смещённым влево → доступ затруднён."},
+  {n:11, topic:"Лёгкие", q:"На какую щель ориентироваться хирургу при операции на нижней доле правого лёгкого?",
+   ans:"Правое лёгкое имеет две щели: горизонтальную (fissura horizontalis) и косую (fissura obliqua). Для операции на нижней доле правого лёгкого хирург ориентируется на косую щель (fissura obliqua). Она отделяет нижнюю долю от средней и верхней долей. Начинается сзади на уровне IV грудного позвонка и идёт косо вперёд и вниз к диафрагмальной поверхности. Горизонтальная щель отделяет верхнюю долю от средней и для доступа к нижней доле не используется.",
+   key:"Ориентир — косая щель (fissura obliqua), отделяет нижнюю долю."},
+  {n:12, topic:"Средостение", q:"Для удаления опухоли грудной части пищевода — в какой отдел средостения проникнуть?",
+   ans:"Грудная часть пищевода (pars thoracica oesophagi) расположена в заднем средостении (mediastinum posterius). Оно ограничено: спереди — перикардом, сзади — позвоночником, с боков — медиастинальными плеврами. Здесь проходят: пищевод, грудная аорта, грудной лимфатический проток, непарная и полунепарная вены, блуждающие нервы.",
+   key:"Пищевод → заднее средостение (mediastinum posterius)."},
+  {n:13, topic:"Почки", q:"Ранение средней трети левой почки. Целостность какого органа обязательно проверить?",
+   ans:"Левая почка (ren sinister) медиально прилежит к аорте, спереди — к хвосту поджелудочной железы (cauda pancreatis) и желудку, латерально — к селезёнке. При ранении средней трети левой почки хирург обязан проверить целостность хвоста поджелудочной железы, так как он непосредственно прилежит к воротам и передней поверхности левой почки. Повреждение поджелудочной железы опасно истечением панкреатического сока.",
+   key:"Хвост поджелудочной железы прилежит к левой почке → обязательная проверка."},
+  {n:14, topic:"Яичко", q:"Повреждены извитые семенные канальцы яичка. Какая функция нарушена?",
+   ans:"Извитые семенные канальцы (tubuli seminiferi contorti) — место сперматогенеза. В их стенке находятся сперматогенные клетки и клетки Сертоли. При повреждении нарушается генеративная (сперматогенная) функция яичка — образование сперматозоидов. Эндокринная функция (выработка тестостерона клетками Лейдига, расположенными в интерстиции) при этом сохраняется.",
+   key:"Нарушается сперматогенез (генеративная функция). Эндокринная функция (тестостерон, клетки Лейдига) сохраняется."},
+  {n:15, topic:"Мочеиспускательный канал", q:"Расслабление какого сфинктера обеспечивает произвольное мочеиспускание?",
+   ans:"Внутренний сфинктер (m. sphincter urethrae internus) — гладкая мускулатура, вегетативная иннервация, непроизвольный. Наружный сфинктер (m. sphincter urethrae externus) — поперечнополосатая мышца мочеполовой диафрагмы, иннервируется n. pudendus, произвольный. Произвольное мочеиспускание обеспечивается расслаблением именно наружного (произвольного) сфинктера — m. sphincter urethrae externus.",
+   key:"Произвольное мочеиспускание — расслабление наружного сфинктера (m. sphincter urethrae externus, n. pudendus)."},
+  {n:16, topic:"Матка", q:"Отверстие матки имеет форму поперечной щели. Были ли у женщины роды?",
+   ans:"У нерожавших женщин отверстие матки (ostium uteri) имеет округлую или овальную форму. После родов, вследствие растяжения и надрывов краёв зева, отверстие приобретает форму поперечной щели. Таким образом, поперечная щелевидная форма наружного зева шейки матки — признак того, что у женщины были роды.",
+   key:"Поперечная щель — признак рожавшей. У нерожавших — округлое отверстие."},
+  {n:17, topic:"Маточная труба", q:"При удалении маточной трубы — какую часть широкой связки матки рассекает хирург?",
+   ans:"Широкая связка матки (lig. latum uteri) состоит из: mesometrium (нижняя часть), mesovarium (брыжейка яичника) и mesosalpinx (брыжейка маточной трубы — верхняя часть). Маточная труба расположена в верхнем крае широкой связки, подвешенная на mesosalpinx. При удалении трубы (сальпингэктомия) хирург рассекает именно mesosalpinx — верхнюю часть широкой связки матки.",
+   key:"Рассекается mesosalpinx — брыжейка маточной трубы (верхняя часть широкой связки)."},
+  {n:18, topic:"Мочеполовая диафрагма", q:"После родов — травма мышц мочеполовой диафрагмы → нарушение удержания мочи. Какая мышца пострадала?",
+   ans:"Произвольное удержание мочи обеспечивает m. sphincter urethrae externus (наружный сфинктер уретры) — поперечнополосатая мышца мочеполовой диафрагмы (diaphragma urogenitale). Охватывает перепончатую часть мочеиспускательного канала. При родовой травме промежности может повреждаться именно эта мышца → стрессовое недержание мочи. Иннервируется n. pudendus.",
+   key:"Пострадала m. sphincter urethrae externus (поперечнополосатая, n. pudendus)."},
+  {n:19, topic:"Аорта и сосуды", q:"А. Назовите ветви дуги аорты. Б. Как топографически отличить наружную и внутреннюю сонные артерии?",
+   ans:"А. Ветви дуги аорты: 1) truncus brachiocephalicus (делится на правую общую сонную и правую подключичную артерии); 2) a. carotis communis sinistra; 3) a. subclavia sinistra. Итого три ветви. Б. A. carotis externa — медиальнее и кпереди, сразу даёт ветви на шее (a. thyroidea superior, a. lingualis и др.). A. carotis interna — латеральнее и кзади, на шее ветвей не даёт, уходит в череп через canalis caroticus.",
+   key:"3 ветви дуги аорты. A. carotis interna — ветвей на шее нет, кзади и латеральнее. A. carotis externa — сразу ветвится."},
+  {n:20, topic:"Язычная артерия", q:"А. На каком уровне язычная артерия отходит от наружной сонной? Б. В каком треугольнике шеи её найти?",
+   ans:"А. Язычная артерия (a. lingualis) — вторая ветвь a. carotis externa, отходит на уровне большого рога подъязычной кости (cornu majus ossis hyoidei). Б. Топографически доступна в треугольнике Пирогова (trigonum lingualis Pirogovi). Ограничен: снизу — сухожилием m. digastricus, сверху и медиально — m. hyoglossus, сверху и спереди — n. hypoglossus. В этом треугольнике выполняется перевязка.",
+   key:"Уровень — рог подъязычной кости. Доступна в треугольнике Пирогова."},
+  {n:21, topic:"Кровоснабжение желудка", q:"А. Какие артерии кровоснабжают желудок? Б. Какие анастомозы в стенках желудка и ДПК?",
+   ans:"А. Из чревного ствола (truncus coeliacus): по малой кривизне — a. gastrica sinistra + a. gastrica dextra; по большой кривизне — a. gastroomentalis sinistra + a. gastroomentalis dextra; дно — aa. gastricae breves (из a. splenica). Б. По малой кривизне — анастомоз левой и правой желудочных артерий; по большой — между желудочно-сальниковыми; в стенке ДПК — a. pancreaticoduodenalis superior (из a. gastroduodenalis) + a. pancreaticoduodenalis inferior (из a. mesenterica superior) — важнейший анастомоз между чревным стволом и a. mesenterica superior.",
+   key:"5 источников из чревного ствола. Анастомоз ДПК: a. pancreaticoduodenalis sup. + inf."},
+  {n:22, topic:"Вены головы", q:"А. Через какие вены инфекция из глазницы проникает в череп? Б. Как синусы сообщаются с кожными венами?",
+   ans:"А. Из глазницы инфекция проникает через vv. ophthalmicae superior et inferior в sinus cavernosus (пещеристый синус). Глазничные вены не имеют клапанов — кровь течёт в обоих направлениях. Также возможен путь: v. angularis → v. facialis → через связи с v. ophthalmica → sinus cavernosus. Б. Синусы сообщаются с кожными венами через эмиссарные вены: v. emissaria parietalis, v. emissaria mastoidea, v. emissaria occipitalis, а также через vv. diploicae.",
+   key:"Путь: vv. ophthalmicae → sinus cavernosus. Связь с кожей — vv. emissariae (без клапанов!)."},
+  {n:23, topic:"Непарная вена", q:"А. Какие вены впадают в непарную вену? Б. Пути оттока от задней грудной стенки.",
+   ans:"А. В v. azygos впадают: правые задние межрёберные вены (vv. intercostales posteriores dextrae), v. hemiazygos и v. hemiazygos accessoria (через поперечные анастомозы), вены пищевода, перикарда, медиастинальные и правые бронхиальные вены. Б. Отток от задней грудной стенки: межрёберные вены → v. azygos (справа), v. hemiazygos (слева) → v. cava superior. Дополнительно — через v. thoracica interna (передний путь) и через v. lumbalis ascendens (связь с v. cava inferior).",
+   key:"В v. azygos — задние межрёберные и полунепарные вены. Отток → v. cava superior."},
+  {n:24, topic:"Проводящая система", q:"Блокада левой ножки пучка Гиса. А. Что это и где? Б. Где заканчиваются волокна?",
+   ans:"А. Пучок Гиса (fasciculus atrioventricularis) — часть проводящей системы сердца. Начинается от AV-узла, проходит через фиброзный скелет и делится в межжелудочковой перегородке на правую (crus dextrum) и левую (crus sinistrum) ножки. Левая ножка разделяется на переднюю и заднюю ветви. При её блокаде возбуждение в левый желудочек поступает с задержкой. Б. Волокна левой ножки заканчиваются в субэндокардиальном слое стенки левого желудочка в виде волокон Пуркинье (fibrae Purkinjei), обеспечивающих синхронное сокращение.",
+   key:"Левая ножка → передняя и задняя ветви → волокна Пуркинье в стенке левого желудочка."},
+  {n:25, topic:"Клапаны сердца", q:"Шумы у V правого реберного хряща. А. Какой клапан? Б. Где проецируются другие клапаны?",
+   ans:"А. У V правого рёберного хряща выслушивается трёхстворчатый клапан (valva tricuspidalis, valva atrioventricularis dextra). Б. Проекции клапанов: аортальный (valva aortae) — за грудиной на уровне III реберного хряща; клапан лёгочного ствола (valva trunci pulmonalis) — у II левого рёберного хряща; митральный (valva mitralis) — у IV левого рёберного хряща. Аускультацию проводят в точках наилучшего выслушивания, а не в точках проекции.",
+   key:"V правый хрящ = трёхстворчатый клапан. Аорта — III справа; лёгочный ствол — II слева; митральный — IV слева."}
+];
+
+const topicList = [...new Set(tasks.map(t => t.topic))];
+const topicColors = {};
+topicList.forEach((tp, i) => topicColors[tp] = i % 10);
+
+let activeTopics = new Set();
+let searchVal = "";
+let openedSet = new Set();
+
+function renderFilters() {
+  const row = document.getElementById("filterRow");
+  row.innerHTML = "";
+  topicList.forEach(tp => {
+    const c = document.createElement("span");
+    c.className = "stat-chip" + (activeTopics.has(tp) ? " active" : "");
+    c.innerHTML = `<span class="dot"></span>${tp}`;
+    c.onclick = () => {
+      if (activeTopics.has(tp)) activeTopics.delete(tp);
+      else activeTopics.add(tp);
+      renderFilters(); filter();
+    };
+    row.appendChild(c);
+  });
+}
+
+function updateProgress() {
+  const pct = tasks.length ? Math.round(openedSet.size / tasks.length * 100) : 0;
+  document.getElementById("progFill").style.width = pct + "%";
+  document.getElementById("openedLabel").textContent = "Открыто: " + openedSet.size;
+}
+
+function filter() {
+  searchVal = document.getElementById("searchInput").value.toLowerCase();
+  const list = document.getElementById("taskList");
+  list.innerHTML = "";
+  const filtered = tasks.filter(t => {
+    const matchTopic = activeTopics.size === 0 || activeTopics.has(t.topic);
+    const matchSearch = !searchVal || t.q.toLowerCase().includes(searchVal) || t.topic.toLowerCase().includes(searchVal) || t.ans.toLowerCase().includes(searchVal);
+    return matchTopic && matchSearch;
+  });
+  document.getElementById("countNum").textContent = filtered.length;
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">Ничего не найдено</div></div>';
+    return;
+  }
+  filtered.forEach((t, idx) => {
+    const card = document.createElement("div");
+    card.className = "task-card" + (openedSet.has(t.n) ? " open" : "");
+    card.style.animationDelay = (idx * 0.03) + "s";
+    const colorClass = "topic-color-" + topicColors[t.topic];
+    card.innerHTML = `
+      <div class="task-head" onclick="toggle(this, ${t.n})">
+        <div class="num-badge">${t.n}</div>
+        <div class="task-meta">
+          <div class="topic-tag ${colorClass}">${t.topic}</div>
+          <div class="task-q">${t.q}</div>
+        </div>
+        <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="task-ans" style="${openedSet.has(t.n) ? 'max-height:900px' : ''}">
+        <div class="task-ans-inner">
+          <div class="ans-section-label">Подробный ответ</div>
+          <div class="ans-text">${t.ans}</div>
+          <div class="key-block">
+            <div class="key-icon">⚡</div>
+            <div class="key-text">${t.key}</div>
+          </div>
+        </div>
+      </div>`;
+    list.appendChild(card);
+  });
+}
+
+function toggle(head, n) {
+  const card = head.parentElement;
+  const ans = card.querySelector(".task-ans");
+  const isOpen = card.classList.contains("open");
+  card.classList.toggle("open");
+  if (isOpen) {
+    ans.style.maxHeight = "0";
+    openedSet.delete(n);
+  } else {
+    ans.style.maxHeight = "900px";
+    openedSet.add(n);
+  }
+  updateProgress();
+}
+
+renderFilters();
+filter();
+updateProgress();
+</script>
+</body>
+</html>
