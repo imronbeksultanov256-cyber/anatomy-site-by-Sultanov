@@ -1,0 +1,1789 @@
+cat > /mnt/user-data/outputs/anatomy_site.html << 'HTMLEOF'
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Анатомия — Подготовка к экзамену</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #161a22;
+    --surface2: #1e2330;
+    --border: rgba(255,255,255,0.07);
+    --text: #e8eaf0;
+    --muted: #6b7280;
+    --accent1: #7c9ff5;
+    --accent2: #5ecfa8;
+    --accent3: #f0a070;
+    --accent4: #e07090;
+    --accent5: #a78bfa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BG decoration */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(124,159,245,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(94,207,168,0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,15,20,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .logo {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .logo-text { font-size: 15px; font-weight: 700; letter-spacing: -0.3px; }
+  .logo-sub { font-size: 11px; color: var(--muted); font-weight: 500; }
+
+  .progress-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    width: 160px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+  .progress-label { font-size: 11px; color: var(--muted); text-align: right; margin-top: 4px; }
+
+  /* HERO */
+  .hero {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 64px 40px 32px;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(124,159,245,0.1);
+    border: 1px solid rgba(124,159,245,0.25);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 12px; font-weight: 600;
+    color: var(--accent1);
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.6) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 15px; color: var(--muted); max-width: 480px; margin: 0 auto 24px;
+    line-height: 1.7;
+  }
+
+  /* SEARCH BAR */
+  .search-container {
+    position: relative; z-index: 1;
+    max-width: 500px;
+    margin: 0 auto 32px;
+    padding: 0 20px;
+  }
+  .search-input {
+    width: 100%;
+    padding: 14px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    transition: all 0.3s;
+  }
+  .search-input:focus {
+    outline: none;
+    border-color: rgba(124,159,245,0.4);
+    box-shadow: 0 0 16px rgba(124,159,245,0.1);
+  }
+
+  /* SECTION TABS */
+  .section-nav {
+    position: relative; z-index: 1;
+    display: flex; gap: 8px;
+    padding: 0 40px 32px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .section-btn {
+    padding: 8px 20px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 13px; font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Manrope', sans-serif;
+  }
+  .section-btn:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+  .section-btn.active { background: var(--accent1); border-color: var(--accent1); color: #0d0f14; }
+  .section-btn[data-sec="2"].active { background: var(--accent2); border-color: var(--accent2); }
+  .section-btn[data-sec="3"].active { background: var(--accent3); border-color: var(--accent3); }
+
+  /* GRID */
+  .questions-grid {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 0 40px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* CARD */
+  .q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 160px;
+  }
+  .q-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--card-accent, var(--accent1));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+    border-radius: 2px 2px 0 0;
+  }
+  .q-card:hover {
+    border-color: rgba(255,255,255,0.15);
+    background: var(--surface2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+  .q-card:hover::before { transform: scaleX(1); }
+  .q-card.answered { border-color: rgba(94,207,168,0.2); }
+  .q-card.answered::after {
+    content: '✓';
+    position: absolute;
+    top: 12px; right: 14px;
+    width: 22px; height: 22px;
+    background: rgba(94,207,168,0.15);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--accent2);
+    line-height: 22px; text-align: center;
+  }
+
+  .card-num {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--card-accent, var(--accent1));
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .card-title {
+    font-size: 14px; font-weight: 600;
+    line-height: 1.5;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  .card-tags {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto;
+  }
+  .tag {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.05);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(8px);
+    display: none; align-items: flex-start; justify-content: center;
+    padding: 40px 20px;
+    overflow-y: auto;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    width: 100%; max-width: 820px;
+    position: relative;
+    overflow: hidden;
+    animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .modal-header {
+    padding: 28px 32px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+  }
+  .modal-num {
+    font-size: 11px; font-weight: 700;
+    color: var(--modal-accent, var(--accent1));
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700;
+    line-height: 1.3;
+    color: var(--text);
+  }
+  .modal-close {
+    width: 36px; height: 36px; flex-shrink: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: none; cursor: pointer;
+    color: var(--muted); font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    font-family: monospace;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.12); color: var(--text); }
+
+  .modal-body {
+    padding: 28px 32px 32px;
+  }
+
+  /* Content blocks */
+  .answer-section {
+    margin-bottom: 28px;
+  }
+  .answer-section:last-child { margin-bottom: 0; }
+
+  .section-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: var(--border);
+  }
+
+  .definition-box {
+    background: rgba(124,159,245,0.07);
+    border: 1px solid rgba(124,159,245,0.2);
+    border-radius: 12px;
+    padding: 18px 20px;
+    font-size: 14px; line-height: 1.7;
+    color: var(--text);
+  }
+
+  .anatomy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .anatomy-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .anatomy-card-title {
+    font-size: 12px; font-weight: 700;
+    color: var(--modal-accent, var(--accent1));
+    margin-bottom: 8px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .anatomy-card ul {
+    list-style: none; padding: 0;
+  }
+  .anatomy-card ul li {
+    font-size: 13px; line-height: 1.6;
+    color: rgba(232,234,240,0.8);
+    padding: 3px 0;
+    padding-left: 14px;
+    position: relative;
+  }
+  .anatomy-card ul li::before {
+    content: '—';
+    position: absolute; left: 0;
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  .highlight-row {
+    display: flex; gap: 10px;
+    flex-wrap: wrap;
+  }
+  .highlight-pill {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    flex: 1; min-width: 140px;
+  }
+  .highlight-pill strong {
+    display: block;
+    font-size: 11px; font-weight: 700;
+    color: var(--modal-accent, var(--accent1));
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  /* Exam tip */
+  .exam-tip {
+    background: rgba(240,160,112,0.08);
+    border: 1px solid rgba(240,160,112,0.25);
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 13px; line-height: 1.6;
+    color: rgba(240,160,112,0.9);
+    display: flex; gap: 10px;
+  }
+  .exam-tip-icon { flex-shrink: 0; font-size: 16px; }
+
+  /* Footer */
+  .modal-footer {
+    padding: 16px 32px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .btn {
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-size: 13px; font-weight: 700;
+    cursor: pointer; border: none;
+    font-family: 'Manrope', sans-serif;
+    transition: all 0.2s;
+  }
+  .btn-ghost {
+    background: rgba(255,255,255,0.05);
+    color: var(--muted);
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+  .btn-primary {
+    background: var(--modal-accent, var(--accent1));
+    color: #0d0f14;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+
+  .learned-btn {
+    display: flex; align-items: center; gap: 7px;
+    background: rgba(94,207,168,0.1);
+    border: 1px solid rgba(94,207,168,0.3);
+    color: var(--accent2);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 12px; font-weight: 700;
+    cursor: pointer;
+    font-family: 'Manrope', sans-serif;
+    transition: all 0.2s;
+  }
+  .learned-btn:hover { background: rgba(94,207,168,0.18); }
+  .learned-btn.done { background: var(--accent2); color: #0d0f14; }
+
+  @media (max-width: 600px) {
+    header { padding: 14px 20px; }
+    .hero { padding: 40px 20px 24px; }
+    .section-nav { padding: 0 20px 24px; }
+    .questions-grid { padding: 0 20px 40px; grid-template-columns: 1fr; }
+    .modal-header, .modal-body, .modal-footer { padding-left: 20px; padding-right: 20px; }
+    .anatomy-grid { grid-template-columns: 1fr; }
+    .modal { border-radius: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🫀</div>
+    <div>
+      <div class="logo-text">Анатомия</div>
+      <div class="logo-sub">Подготовка к практике</div>
+    </div>
+  </div>
+  <div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">0 / 45 изучено</div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">📚 45 вопросов · 3 раздела</div>
+  <h1>Готовимся<br>к экзамену</h1>
+  <p>Нажми на карточку — откроется подробный ответ с анатомическими деталями для практики на муляже</p>
+</div>
+
+<div class="search-container">
+  <input type="text" id="searchInput" class="search-input" placeholder="Поиск по названию или тегам..." oninput="handleSearch()">
+</div>
+
+<div class="section-nav">
+  <button class="section-btn active" data-sec="all" onclick="filterSection('all', this)">Все разделы</button>
+  <button class="section-btn" data-sec="1" onclick="filterSection('1', this)">I. Пищеварительная</button>
+  <button class="section-btn" data-sec="2" onclick="filterSection('2', this)">II. Дыхательная и мочеполовая</button>
+  <button class="section-btn" data-sec="3" onclick="filterSection('3', this)">III. Сердечно-сосудистая</button>
+</div>
+
+<div class="questions-grid" id="grid"></div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-num" id="modalNum"></div>
+        <div class="modal-title" id="modalTitle"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <button class="learned-btn" id="learnedBtn" onclick="markLearned()">
+        <span id="learnedIcon">✓</span> <span id="learnedText">Изучил</span>
+      </button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" onclick="navQuestion(-1)">← Пред.</button>
+        <button class="btn btn-primary" onclick="navQuestion(1)">След. →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SECTIONS = {
+  1: { label: 'Пищеварительная система', accent: '#7c9ff5' },
+  2: { label: 'Дыхательная и мочеполовая', accent: '#5ecfa8' },
+  3: { label: 'Сердечно-сосудистая', accent: '#f0a070' }
+};
+
+const QUESTIONS = [
+  // === РАЗДЕЛ I ===
+  {
+    sec: 1, n: 1,
+    title: 'Границы преддверия и собственной ротовой полости',
+    tags: ['Рот', 'Сагиттальный распил'],
+    answer: {
+      def: 'Ротовая полость (cavitas oris) делится на <strong>преддверие рта</strong> (vestibulum oris) и <strong>собственно ротовую полость</strong> (cavitas oris propria). Граница между ними — зубы и альвеолярные отростки челюстей.',
+      blocks: [
+        {
+          title: 'Преддверие рта (vestibulum oris)',
+          items: ['Щелевидное пространство между губами/щеками снаружи', 'Зубами и дёснами изнутри', 'Спереди — ротовая щель (rima oris)', 'Сзади — зубные ряды с альвеолярными отростками']
+        },
+        {
+          title: 'Собственно ротовая полость (cavitas oris propria)',
+          items: ['Сверху — твёрдое и мягкое нёбо', 'Снузу — дно полости рта (диафрагма)', 'С боков — зубы и дёсны', 'Сзади — зев (fauces) — сообщение с глоткой']
+        }
+      ],
+      pills: [
+        { label: 'Граница', text: 'Зубные ряды + альвеолярные отростки' },
+        { label: 'Сообщение', text: 'Через ретромолярные промежутки за 3-ми молярами' }
+      ],
+      tip: 'На сагиттальном распиле головы чётко видно: спереди губы, затем зубы — это граница двух отделов. Твёрдое нёбо — крыша собственной полости.'
+    }
+  },
+  {
+    sec: 1, n: 2,
+    title: 'Зубная формула молочных и постоянных зубов',
+    tags: ['Зубы', 'Формула'],
+    answer: {
+      def: 'Зубная формула — схема, описывающая количество и виды зубов на одной половине верхней и нижней челюсти. Молочных зубов — 20, постоянных — 32.',
+      blocks: [
+        {
+          title: 'Молочные зубы (dentes decidui) — 20',
+          items: ['Анатомическая формула: 2.1.0.2 / 2.1.0.2', '2 резца, 1 клык, 0 премоляров, 2 моляра на каждой половине челюсти', 'Прорезывание начинается с 6 месяцев']
+        },
+        {
+          title: 'Постоянные зубы (dentes permanentes) — 32',
+          items: ['Анатомическая формула: 2.1.2.3 / 2.1.2.3', '2 резца, 1 клык, 2 премоляра, 3 моляра', '3-й моляр называют зубом мудрости (dens serotinus)']
+        }
+      ],
+      pills: [
+        { label: 'Резцы / Клыки', text: 'Dentes incisivi (2) / Dentes canini (1)' },
+        { label: 'Премоляры / Моляры', text: 'Dentes praemolares (2) / Dentes molares (3)' }
+      ],
+      tip: 'На экзамене запишите формулу: молочная 2102, постоянная 2123. Обратите внимание, что у детей отсутствуют премоляры.'
+    }
+  },
+  {
+    sec: 1, n: 3,
+    title: 'Пищевод: изгибы, сужения и части',
+    tags: ['Пищевод', 'Топография'],
+    answer: {
+      def: 'Пищевод (oesophagus) — мышечная трубка длиной 25-30 см, соединяющая глотку с желудком. Начинается на уровне VI шейного позвонка, заканчивается на уровне XI грудного.',
+      blocks: [
+        {
+          title: 'Три анатомические части',
+          items: ['Шейная часть (pars cervicalis) — от C6 до Th1', 'Грудная часть (pars thoracica) — от Th1 до Th10 (самая длинная)', 'Брюшная часть (pars abdominalis) — ниже диафрагмы до XI грудного, длиной 1-3 см']
+        },
+        {
+          title: 'Три анатомических сужения',
+          items: ['Форингеальное (глоточное) — в начале органа, уровень C6', 'Бронхиальное (аортальное) — перекрест с левым главным бронхом, уровень Th4-Th5', 'Диафрагмальное — прохождение через диафрагму, уровень Th10']
+        }
+      ],
+      pills: [
+        { label: 'Сужения', text: 'Анатомические (C6, Th4-5, Th10) и физиологические (кардиальное)' },
+        { label: 'Синтопия', text: 'Спереди в грудном отделе лежит трахея и дуга аорты' }
+      ],
+      tip: 'На муляже показывайте три части последовательно сверху вниз. Обязательно назовите уровни позвонков для всех сужений.'
+    }
+  },
+  {
+    sec: 1, n: 4,
+    title: 'Язык: строение, сосочки и мышцы',
+    tags: ['Язык', 'Слизистая'],
+    answer: {
+      def: 'Язык (lingua) — мышечный орган, покрытый слизистой оболочкой. Участвует в жевании, глотании, артикуляции и восприятии вкуса.',
+      blocks: [
+        {
+          title: 'Анатомические части',
+          items: ['Верхушка (apex linguae) — передняя свободная часть', 'Тело (corpus linguae) — средняя крупная часть', 'Корень (radix linguae) — задняя часть, прикрепленная к подъязычной кости', 'Спинка языка (dorsum linguae) — верхняя поверхность с терминальной бороздой']
+        },
+        {
+          title: 'Виды сосочков (papillae)',
+          items: ['Нитевидные (filiformes) — общая чувствительность (тактильная)', 'Грибовидные (fungiformes) — рассеяны по спинке, вкусовые', 'Желобоватые (vallatae) — 7-12 штук перед терминальной бороздой, вкус (горькое)', 'Листовидные (foliatae) — на краях языка, вкус (кислое)']
+        }
+      ],
+      pills: [
+        { label: 'Скелетные мышцы', text: 'm. genioglossus, m. hyoglossus, m. styloglossus' },
+        { label: 'Собственные мышцы', text: 'Верхняя/нижняя продольные, поперечная, вертикальная' }
+      ],
+      tip: 'Покажите на муляже V-образную терминальную борозду (sulcus terminalis). Сразу перед ней лежат крупные желобоватые сосочки.'
+    }
+  },
+  {
+    sec: 1, n: 5,
+    title: 'Слюнные железы: топография и протоки',
+    tags: ['Железы', 'Слюна'],
+    answer: {
+      def: 'Различают три пары крупных слюнных желёз: околоушная, поднижнечелюстная и подъязычная. Они вырабатывают слюну для первичной химической обработки пищи.',
+      blocks: [
+        {
+          title: 'Околоушная железа (glandula parotidea)',
+          items: ['Самая крупная, серозный тип секрета. Расположена в позадичелюстной ямке', 'Выводной проток (Stenon) открывается в преддверие рта на уровне 2-го верхнего большого коренного зуба']
+        },
+        {
+          title: 'Поднижнечелюстная и подъязычная железы',
+          items: ['Поднижнечелюстная (gl. submandibularis) — смешанная, лежит в поднижнечелюстном треугольнике', 'Подъязычная (gl. sublingualis) — слизистая, лежит на челюстно-подъязычной мышце под слизистой дна рта', 'Их протоки открываются на подъязычном сосочке (caruncula sublingualis)']
+        }
+      ],
+      pills: [
+        { label: 'Проток parotidea', text: 'Прободает m. buccinator (щечную мышцу)' },
+        { label: 'Caruncula', text: 'Место слияния протоков поднижнечелюстной и подъязычной желез' }
+      ],
+      tip: 'На муляже покажите ход околоушного протока по наружной поверхности m. masseter.'
+    }
+  },
+  {
+    sec: 1, n: 6,
+    title: 'Глотка: отделы, строение стенки, лимфоидное кольцо',
+    tags: ['Глотка', 'Топография'],
+    answer: {
+      def: 'Глотка (pharynx) — мышечно-фиброзная трубка, расположенная позади полости носа, рта и гортани. Соединяет их с пищеводом и гортанью. Простирается от основания черепа до C6.',
+      blocks: [
+        {
+          title: 'Три отдела глотки',
+          items: ['Носоглотка (pars nasalis) — выше мягкого нёба, содержит хоаны и отверстия слуховых труб', 'Ротоглотка (pars oralis) — от мягкого нёба до надгортанника, сообщается с полостью рта через зев', 'Гортаноглотка (pars laryngea) — от надгортанника до C6, переходит в пищевод']
+        },
+        {
+          title: 'Лимфоэпителиальное кольцо Пирогова-Вальдейера',
+          items: ['Две нёбные миндалины (tonsillae palatinae) — в пазухах между дужками', 'Две трубные миндалины (tonsillae tubariae) — у глоточного отверстия слуховой трубы', 'Глоточная миндалина (tonsilla pharyngea/аденоид) — в своде носоглотки', 'Язычная миндалина (tonsilla lingualis) — на корне языка']
+        }
+      ],
+      pills: [
+        { label: 'Констрикторы', text: 'Верхний, средний и нижний суживатели глотки' },
+        { label: 'Продольные мышцы', text: 'm. stylopharyngeus, m. salpingopharyngeus (подниматели)' }
+      ],
+      tip: 'На распиле головы четко продемонстрируйте границы отделов: мягкое нёбо и корень языка.'
+    }
+  },
+  {
+    sec: 1, n: 7,
+    title: 'Желудок: анатомия, топография и брюшинный покров',
+    tags: ['Желудок', 'Синтопия'],
+    answer: {
+      def: 'Желудок (gaster / ventriculus) — мешкообразное расширение пищеварительного тракта емкостью 1.5-2.5 литра. Расположен в левом подреберье и собственно надчревной области.',
+      blocks: [
+        {
+          title: 'Анатомические части желудка',
+          items: ['Кардиальная часть (pars cardiaca) — место входа пищевода', 'Дно или свод (fundus / fornix) — куполообразная верхняя часть слева', 'Тело желудка (corpus gastricum) — средняя, наибольшая часть органа', 'Пилорическая (привратниковая) часть (pars pylorica) — антрум и канал привратника']
+        },
+        {
+          title: 'Кривизны и брюшина',
+          items: ['Малая кривизна (curvatura minor) — обращена вправо и вверх', 'Большая кривизна (curvatura major) — обращена влево и вниз', 'Отношение к брюшине: интраперитонеальное (покрыт со всех сторон)']
+        }
+      ],
+      pills: [
+        { label: 'Скелетотопия', text: 'Ostium cardiacum — XI грудной; ostium pyloricum — I поясничный' },
+        { label: 'Слои мышц', text: 'Наружный продольный, средний круговой, внутренний косой' }
+      ],
+      tip: 'Покажите сфинктер привратника (m. sphincter pylori) — это сильное утолщение кругового мышечного слоя на выходе из желудка.'
+    }
+  },
+  {
+    sec: 1, n: 8,
+    title: 'Двенадцатиперстная кишка: части, топография, дуоденальный сосочек',
+    tags: ['12-ПК', 'Кишечник'],
+    answer: {
+      def: 'Двенадцатиперстная кишка (duodenum) — начальный отдел тонкой кишки длиной 25-30 см. Подковообразно огибает головку поджелудочной железы.',
+      blocks: [
+        {
+          title: 'Анатомические части duodeni',
+          items: ['Верхняя часть (pars superior) — на уровне L1, имеет расширение (ампулу/луковицу)', 'Нисходящая часть (pars descendens) — опускается вдоль позвоночника до L3', 'Горизонтальная часть (pars horizontalis) — пересекает позвоночник на уровне L3', 'Восходящая часть (pars ascendens) — поднимается до L2, образует дуоденоеюнальный изгиб']
+        },
+        {
+          title: 'Рельеф и большой сосочек',
+          items: ['Слизистая образует круговые складки (plica circulares)', 'На медиальной стенке нисходящей части есть продольная складка (plica longitudinalis duodeni)', 'Она заканчивается большим дуоденальным сосочком (papilla duodeni major / Фатеров сосочек)']
+        }
+      ],
+      pills: [
+        { label: 'Фатеров сосочек', text: 'Место впадения общего желчного и панкреатического протоков' },
+        { label: 'Брюшина', text: 'Экстраперитонеально (ретроперитонеально), кроме ампулы' }
+      ],
+      tip: 'Покажите Фатеров сосочек на вскрытом муляже нисходящей части кишки. Выше него может располагаться малый сосочек (добавочного протока).'
+    }
+  },
+  {
+    sec: 1, n: 9,
+    title: 'Брыжеечная часть тонкой кишки: тощая и подвздошная кишка',
+    tags: ['Тощая', 'Подвздошная'],
+    answer: {
+      def: 'Брыжеечная часть тонкой кишки делится на тощую кишку (jejunum) и подвздошную кишку (ileum). Они занимают большую часть нижнего этажа брюшной полости и покрыты брюшиной интраперитонеально.',
+      blocks: [
+        {
+          title: 'Тощая кишка (jejunum) — проксимальные 2/5',
+          items: ['Расположена преимущественно в левой верхней части брюшной полости', 'Имеет больший диаметр, более толстую стенку и выраженную васкуляризацию', 'Круговые складки высокие, расположены густо']
+        },
+        {
+          title: 'Подвздошная кишка (ileum) — дистальные 3/5',
+          items: ['Расположена в правой нижней части брюшной полости и малом тазу', 'Стенка тоньше, диаметр меньше, складок меньше и они ниже', 'Содержит групповые лимфоидные узелки (Пейеровы бляшки) в стенке']
+        }
+      ],
+      pills: [
+        { label: 'Radix mesenterii', text: 'Корень брыжейки прикрепляется к задней брюшной стенке от L2 до правого крестцово-подвздошного сустава' },
+        { label: 'Пейеровы бляшки', text: 'Noduli lymphoidei aggregati — маркер подвздошной кишки' }
+      ],
+      tip: 'На практическом экзамене тощую и подвздошную кишку отличают по топографии (левый верхний квадрант против правого нижнего).'
+    }
+  },
+  {
+    sec: 1, n: 10,
+    title: 'Анатомия толстой кишки: отличия от тонкой, отделы',
+    tags: ['Толстая кишка', 'Строение'],
+    answer: {
+      def: 'Толстая кишка (intestinum crassum) простирается от илеоцекального клапана до ануса. Длина 1.5 - 2 метра. Основная функция — всасывание воды и формирование каловых масс.',
+      blocks: [
+        {
+          title: 'Три макроскопических отличия от тонкой кишки',
+          items: ['Мышечные ленты (teniae coli) — три продольных пучка гладких мышц', 'Гаустры (haustrae coli) — мешкообразные выпячивания стенки между лентами', 'Сальниковые отростки (appendices epiploicae) — выросты серозной оболочки с жиром']
+        },
+        {
+          title: 'Анатомические отделы толстой кишки',
+          items: ['Слепая кишка (caecum) с червеобразным отростком (appendix vermiformis)', 'Ободочная кишка (colon) — восходящая, поперечная, нисходящая, сигмовидная', 'Прямая кишка (rectum) — конечный отдел в полости малого таза']
+        }
+      ],
+      pills: [
+        { label: 'Teniae coli', text: 'Tenia libera (свободная), mesocolica (брыжеечная), omentalis (сальниковая)' },
+        { label: 'Цвет', text: 'Толстая кишка на трупном материале имеет серовато-пепельный оттенок' }
+      ],
+      tip: 'Показывая на муляже отделы ободочной кишки, обязательно продемонстрируйте правый (печеночный) и левый (селезеночный) изгибы.'
+    }
+  },
+  {
+    sec: 1, n: 11,
+    title: 'Слепая кишка: строение, илеоцекальный клапан, аппендикс',
+    tags: ['Слепая кишка', 'Аппендикс'],
+    answer: {
+      def: 'Слепая кишка (caecum) — начальный мешкообразный отдел толстой кишки, расположенный в правой подвздошной ямке ниже впадения тонкой кишки.',
+      blocks: [
+        {
+          title: 'Илеоцекальное отверстие и клапан',
+          items: ['Впадение подвздошной кишки защищено илеоцекальным клапаном (valva ileocaecalis / Баугиниева заслонка)', 'Клапан имеет верхнюю и нижнюю губы, ограничивающие отверстие', 'Предотвращает рефлюкс содержимого толстой кишки в тонкую']
+        },
+        {
+          title: 'Червеобразный отросток (appendix vermiformis)',
+          items: ['Слепой вырост, отходящий от медиально-задней стенки слепой кишки', 'Точка отхождения — место схождения всех трех лент (teniae coli)', 'Имеет собственную брыжейку (mesoappendix), покрыт интраперитонеально']
+        }
+      ],
+      pills: [
+        { label: 'Ориентир хирурга', text: 'Поиск аппендикса ведут, прослеживая tenia libera до ее основания' },
+        { label: 'Положения отростка', text: 'Нисходящее (тазовое), латеральное, восходящее, ретроцекальное' }
+      ],
+      tip: 'Покажите на вскрытом препарате губы Баугиниевой заслонки и маленькое отверстие червеобразного отростка чуть ниже.'
+    }
+  },
+  {
+    sec: 1, n: 12,
+    title: 'Печень: поверхности, доли, борозды и связки',
+    tags: ['Печень', 'Анатомия'],
+    answer: {
+      def: 'Печень (hepar) — самая крупная железа человеческого организма (около 1.5 кг). Выполняет детоксикационную, метаболическую и экзокринную (желчеобразование) функции.',
+      blocks: [
+        {
+          title: 'Поверхности и края органа',
+          items: ['Диафрагмальная поверхность (facies diaphragmatica) — выпуклая верхняя', 'Висцеральная поверхность (facies visceralis) — уплощенная нижняя, с бороздами', 'Нижний край (margo inferior) — острый передний край органа']
+        },
+        {
+          title: 'Доли и Н-образные борозды нижнего этажа',
+          items: ['Две продольные и одна поперечная борозды делят висцеральную поверхность на 4 доли', 'Правая доля (lobus dexter), левая доля (lobus sinister)', 'Квадратная доля (lobus quadratus) — спереди между круглой связкой и ложем желчного пузыря', 'Хвостатая доля (lobus caudatus) — сзади между венозной связкой и полой веной']
+        }
+      ],
+      pills: [
+        { label: 'Ворота печени', text: 'Porta hepatis (поперечная борозда) — входят a. hepatica propria, v. portae; выходит ductus hepaticus communis' },
+        { label: 'Связки', text: 'Lig. falciforme (серповидная), lig. teres hepatis (круглая — заросшая пупочная вена)' }
+      ],
+      tip: 'Триада ворот печени (справа налево): D.A.V. — Duct (проток), Artery (артерия), Vein (вена воротная). Запомните этот порядок для демонстрации.'
+    }
+  },
+  {
+    sec: 1, n: 13,
+    title: 'Желчный пузырь и желчевыводящие пути',
+    tags: ['Желчь', 'Протоки'],
+    answer: {
+      def: 'Желчный пузырь (vesica biliaris / fellea) служит резервуаром для концентрации и хранения желчи. Расположен в фоссе на висцеральной поверхности правой доли печени.',
+      blocks: [
+        {
+          title: 'Части желчного пузыря',
+          items: ['Дно (fundus) — передний широкий конец, выступает из-под нижнего края печени', 'Тело (corpus) — средняя основная часть органа', 'Шейка (collum) — суженный задний конец, переходящий в пузырный проток']
+        },
+        {
+          title: 'Схема формирования желчных протоков',
+          items: ['Правый и левый печеночные протоки сливаются в общий печеночный проток (ductus hepaticus communis)', 'От шейки пузыря отходит пузырный проток (ductus cysticus)', 'При слиянии общего печеночного и пузырного протоков образуется общий желчный проток (ductus choledochus)']
+        }
+      ],
+      pills: [
+        { label: 'Choledochus', text: 'Проходит в lig. hepatoduodenale, открывается на Фатеровом сосочке' },
+        { label: 'Сфинктер Одди', text: 'm. sphincter ampullae hepatopancreaticae — регулирует выброс желчи' }
+      ],
+      tip: 'Покажите на муляже малого сальника ход ductus choledochus: он лежит в самом правом крае печеночно-дуоденальной связки.'
+    }
+  },
+  {
+    sec: 1, n: 14,
+    title: 'Поджелудочная железа: строение, топография и протоки',
+    tags: ['Поджелудочная', 'Топография'],
+    answer: {
+      def: 'Поджелудочная железа (pancreas) — железа смешанной секреции. Вырабатывает панкреатический сок (экзокринная) и гормоны инсулин, глюкагон (эндокринная).',
+      blocks: [
+        {
+          title: 'Анатомические отделы железы',
+          items: ['Головка (caput pancreatis) — подковообразно охвачена двенадцатиперстной кишкой, имеет крючковидный отросток', 'Тело (corpus pancreatis) — трехгранная средняя часть, пересекает позвоночник на уровне L1', 'Хвост (cauda pancreatis) — суженный левый конец, направлен к воротам селезенки']
+        },
+        {
+          title: 'Протоковая система органа',
+          items: ['Главный проток (ductus pancreaticus / Вирсунгов) проходит через всю длину железы', 'Сливается с холедохом и открывается на papilla duodeni major', 'Добавочный проток (ductus pancreaticus accessorius / Санториниев) открывается на papilla duodeni minor']
+        }
+      ],
+      pills: [
+        { label: 'Брюшина', text: 'Расположена экстраперитонеально (ретроперитонеально)' },
+        { label: 'Островки', text: 'Островки Лангерганса сосредоточены преимущественно в области хвоста' }
+      ],
+      tip: 'Покажите на муляже отношение хвоста железы к селезенке — это важный ориентир при хирургических манипуляциях.'
+    }
+  },
+  {
+    sec: 1, n: 15,
+    title: 'Брюшина: листки, полости, брыжейки и сальники',
+    tags: ['Брюшина', 'Сальник'],
+    answer: {
+      def: 'Брюшина (peritoneum) — замкнутая (у мужчин) серозная оболочка, выстилающая брюшную полость и покрывающая внутренние органы.',
+      blocks: [
+        {
+          title: 'Листки брюшины и полость',
+          items: ['Париетальная брюшина (peritoneum parietale) — выстилает стенки живота', 'Висцеральная брюшина (peritoneum viscerale) — покрывает сами органы', 'Полость брюшины (cavitas peritonei) — щелевидное пространство между листками с серозной жидкостью']
+        },
+        {
+          title: 'Производные брюшины',
+          items: ['Брыжейки (mesenterium) — дупликатура брюшины, подвешивающая орган к задней стенке', 'Малый сальник (omentum minus) — lig. hepatogastricum + lig. hepatoduodenale', 'Большой сальник (omentum majus) — свисает от большой кривизны желудка в виде фартука, состоит из 4 листков брюшины']
+        }
+      ],
+      pills: [
+        { label: 'Интраперитонеально', text: 'Покрыт со всех сторон (желудок, тощая, подвздошная, селезенка)' },
+        { label: 'Мезоперитонеально', text: 'Покрыт с 3-х сторон (восходящая и нисходящая ободочная, печень)' }
+      ],
+      tip: 'Покажите на муляже сальниковую сумку (bursa omentalis) позади желудка и ее вход — сальниковое отверстие (foramen epiploicum / Винслово).'
+    }
+  },
+
+  // === РАЗДЕЛ II ===
+  {
+    sec: 2, n: 16,
+    title: 'Полость носа: строение стенки, носовые ходы',
+    tags: ['Нос', 'Дыхание'],
+    answer: {
+      def: 'Полость носа (cavitas nasi) — начальный отдел дыхательных путей. Разделена перегородкой носа (septum nasi) на две половины.',
+      blocks: [
+        {
+          title: 'Стенки полости носа',
+          items: ['Верхняя стенка — ситовидная пластинка решетчатой кости', 'Нижняя стенка — твердое нёбо (отростки верхней челюсти и нёбной кости)', 'Латеральная стенка — носит три носовые раковины (conchae nasales superior, media, inferior)']
+        },
+        {
+          title: 'Носовые ходы и их сообщения',
+          items: ['Верхний ход (meatus nasi superior) — открываются задние ячейки решетчатой кости и клиновидная пазуха', 'Средний ход (meatus nasi medius) — открываются лобная и гайморова пазухи, передние ячейки решетчатой кости', 'Нижний ход (meatus nasi inferior) — открывается носослезный проток (ductus nasolacrimalis)']
+        }
+      ],
+      pills: [
+        { label: 'Хоаны', text: 'Choanae — задние отверстия носа, открывающиеся в носоглотку' },
+        { label: 'Регионы', text: 'Дыхательный (regio respiratoria) и обонятельный (regio olfactoria, верхняя раковина)' }
+      ],
+      tip: 'На сагиттальном распиле найдите нижнюю носовую раковину. Под ней находится нижний носовой ход, четко покажите его пальцем или зондом.'
+    }
+  },
+  {
+    sec: 2, n: 17,
+    title: 'Гортань: хрящи, соединения и мышцы',
+    tags: ['Гортань', 'Хрящи'],
+    answer: {
+      def: 'Гортань (larynx) — полый орган дыхательной системы, выполняющий функции проведения воздуха и голосообразования. Расположен на уровне C4-C6.',
+      blocks: [
+        {
+          title: 'Хрящи гортани (cartilagines laryngis)',
+          items: ['Непарные хрящи: щитовидный (cartilago thyroidea), перстневидный (c. cricoidea), надгортанник (epiglottis)', 'Парные хрящи: черпаловидные (cartilagines arytenoideae), рожковидные, клиновидные']
+        },
+        {
+          title: 'Суставы и мышцы',
+          items: ['Перстнещитовидный и перстнечерпаловидный суставы изменяют натяжение связок', 'Мышцы-дилататоры: m. cricoarytenoideus posterior (задняя перстнечерпаловидная — единственная расширяющая голосовую щель)', 'Мышцы-констрикторы: латеральная перстнечерпаловидная, щиточерпаловидная, поперечная черпаловидная']
+        }
+      ],
+      pills: [
+        { label: 'Голосовые связки', text: 'Ligg. vocalia — натянуты между щитовидным и черпаловидными хрящами' },
+        { label: 'Кадык', text: 'Prominentia laryngea — выступ щитовидного хряща' }
+      ],
+      tip: 'Запомните «мышцу жизни»: m. cricoarytenoideus posterior. При ее параличе голосовые связки смыкаются, вызывая удушье.'
+    }
+  },
+  {
+    sec: 2, n: 18,
+    title: 'Полость гортани: отделы, голосовая щель',
+    tags: ['Гортань', 'Голос'],
+    answer: {
+      def: 'Полость гортани по форме напоминает песочные часы: расширена сверху и снизу, сужена посередине за счет складок слизистой.',
+      blocks: [
+        {
+          title: 'Три отдела полости гортани',
+          items: ['Преддверие гортани (vestibulum laryngis) — от входа в гортань до складок преддверия', 'Межжелудочковый отдел — средний короткий отдел между складками преддверия и голосовыми складками', 'Подголосовая полость (cavitas infraglottica) — нижний отдел, расширяется и переходит в трахею']
+        },
+        {
+          title: 'Сладки и желудочки гортани',
+          items: ['Складки преддверия (plicae vestibulares) — ложные голосовые складки', 'Голосовые складки (plicae vocales) — содержат голосовую связку и голосовую мышцу', 'Желудочки гортани (ventriculi laryngis) — углубления по бокам между складками']
+        }
+      ],
+      pills: [
+        { label: 'Голосовая щель', text: 'Rima glottidis — щель между правой и левой голосовыми складками' },
+        { label: 'Части щели', text: 'Межперепончатая (передняя, голосовая) и межхрящевая (задняя, дыхательная)' }
+      ],
+      tip: 'На разрезе гортани покажите пальцем углубления по бокам — желудочки (Морганиевы синусы). Они служат резонаторами звука.'
+    }
+  },
+  {
+    sec: 2, n: 19,
+    title: 'Трахея и главные бронхи: строение, топография, различия',
+    tags: ['Трахея', 'Бронхи'],
+    answer: {
+      def: 'Трахея (trachea) — дыхательная трубка, состоящая из 16-20 хрящевых полуколец, простирающаяся от C6 до Th4-Th5, где происходит бифуркация на два главных бронха.',
+      blocks: [
+        {
+          title: 'Строение стенки трахеи',
+          items: ['Хрящи трахеи (cartilagines tracheales) — гиалиновые полукольца, незамкнутые сзади', 'Перепончатая стенка (paries membranaceus) — задняя стенка, прилежит к пищеводу, содержит гладкие мышцы', 'Слизистая покрыта мерцательным (реснитчатым) эпителием']
+        },
+        {
+          title: 'Главные бронхи (bronchi principales): правый и левый',
+          items: ['Правый главный бронх — более широкий, короткий и вертикальный (продолжение трахеи)', 'Левый главный бронх — узкий, длинный, отходит под большим углом (горизонтальнее)', 'Инородные тела из трахеи чаще попадают в правый бронх']
+        }
+      ],
+      pills: [
+        { label: 'Бифуркация', text: 'Bifurcatio tracheae — деление на уровне Th4-Th5 позвонков' },
+        { label: 'Карина', text: 'Carina tracheae — полулунный выступ слизистой внутри места деления' }
+      ],
+      tip: 'На муляже покажите, что правый бронх короче левого и идет вертикально. Запомните: правый бронх имеет 3 долевых ветви, левый — 2 (соответственно долям легких).'
+    }
+  },
+  {
+    sec: 2, n: 20,
+    title: 'Легкие: поверхности, края, доли и борозды',
+    tags: ['Легкие', 'Анатомия'],
+    answer: {
+      def: 'Легкие (pulmones) — парные органы дыхания, занимающие большую часть грудной полости. Осуществляют газообмен между воздухом и кровью.',
+      blocks: [
+        {
+          title: 'Поверхности и края легкого',
+          items: ['Реберная поверхность (facies costalis) — выпуклая, прилежит к ребрам', 'Диафрагмальная поверхность (facies diaphragmatica) — вогнутое основание легкого', 'Медиальная поверхность (facies medialis) — обращена к средостению и позвоночнику', 'Края легкого: острый передний край (margo anterior) и нижний край (margo inferior)']
+        },
+        {
+          title: 'Доли и междолевые щели легких',
+          items: ['Правое легкое имеет 3 доли (верхняя, средняя, нижняя) и 2 щели: косую (fissura obliqua) и горизонтальную (fissura horizontalis)', 'Левое легкое имеет 2 доли (верхняя, нижняя) и 1 косую щель', 'На переднем крае левого легкого есть сердечная вырезка (incisura cardiaca)']
+        }
+      ],
+      pills: [
+        { label: 'Язычок левого легкого', text: 'Lingula pulmonis sinistri — выступ нижней части верхней доли' },
+        { label: 'Объем легких', text: 'Правое легкое примерно на 10% больше и тяжелее левого' }
+      ],
+      tip: 'Показывая легкие на экзамене, не перепутайте стороны: горизонтальная щель есть ТОЛЬКО на правом легком!'
+    }
+  },
+  {
+    sec: 2, n: 21,
+    title: 'Ворота и корень легкого: топография элементов',
+    tags: ['Корень легкого', 'Топография'],
+    answer: {
+      def: 'Ворота легкого (hilum pulmonis) — овальное углубление на медиальной поверхности, через которое проходят элементы корня легкого. Корень легкого (radix pulmonis) связывает легкое со средостением.',
+      blocks: [
+        {
+          title: 'Топография элементов корня ПРАВОГО легкого (сверху вниз)',
+          items: ['Бронх (главный правый бронх) занимает самое верхнее положение', 'Артерия (легочная артерия) лежит ниже бронха', 'Вены (легочные вены) занимают самое нижнее положение', 'Мнемоника для правого легкого: Б.А.В. (Бронх, Артерия, Вена)']
+        },
+        {
+          title: 'Топография элементов корня ЛЕВОГО легкого (сверху вниз)',
+          items: ['Артерия (легочная артерия) занимает самое верхнее положение под дугой аорты', 'Бронх (главный левый бронх) лежит ниже артерии', 'Вены (легочные вены) лежат в самом низу корня', 'Мнемоника для левого легкого: А.Б.В. (Артерия, Бронх, Вена)']
+        }
+      ],
+      pills: [
+        { label: 'Правый корень', text: 'Сверху вниз: Бронх → Артерия → Вена (БАВ)' },
+        { label: 'Левый корень', text: 'Сверху вниз: Артерия → Бронх → Вена (АБВ)' }
+      ],
+      tip: 'Это классический и очень строгий экзаменационный вопрос! Запомните правила БАВ для правого легкого и АБВ для левого легкого.'
+    }
+  },
+  {
+    sec: 2, n: 22,
+    title: 'Плевра: листки, полость, плевральные синусы',
+    tags: ['Плевра', 'Синусы'],
+    answer: {
+      def: 'Плевра (pleura) — серозная оболочка легкого, разделяющаяся на висцеральный и париетальный листки. Ограничивают герметичную плевральную полость.',
+      blocks: [
+        {
+          title: 'Листки и отделы плевры',
+          items: ['Висцеральная плевра — плотно срастается с тканью легкого, заходит в междолевые щели', 'Париетальная плевра — выстилает стенки грудной клетки. Делится на реберную, диафрагмальную и медиастинальную плевру', 'Полость плевры (cavitas pleuralis) — замкнутое пространство с небольшим количеством серозной жидкости, давление отрицательное']
+        },
+        {
+          title: 'Плевральные синусы (карманы)',
+          items: ['Пространства париетальной плевры в местах перехода ее отделов друг в друга, куда легкое заходит только на глубоком вдохе', 'Реберно-диафрагмальный синус (recessus costodiaphragmaticus) — самый глубокий и низкий, здесь скапливается экссудат', 'Реберно-медиастинальный синус (recessus costomediastinalis) — за грудиной']
+        }
+      ],
+      pills: [
+        { label: 'Плевральная пункция', text: 'Проводится по верхнему краю ребра в реберно-диафрагмальный синус' },
+        { label: 'Купол плевры', text: 'Cupula pleurae — верхушка париетальной плевры, выступает на 2-3 см выше ключицы' }
+      ],
+      tip: 'Покажите на муляже нижний край реберной плевры, переходящий на диафрагму. Скажите экзаменатору, что это самое глубокое место плевральной полости.'
+    }
+  },
+  {
+    sec: 2, n: 23,
+    title: 'Средостение: границы, анатомические отделы и органы',
+    tags: ['Средостение', 'Топография'],
+    answer: {
+      def: 'Средостение (mediastinum) — комплекс органов и клетчатки, расположенный в грудной полости между правой и левой медиастинальными плеврами.',
+      blocks: [
+        {
+          title: 'Границы средостения',
+          items: ['Спереди — грудина, сзади — грудной отдел позвоночника', 'Снизу — диафрагма, сверху — верхняя апертура грудной клетки', 'По бокам — медиастинальная париетальная плевра']
+        },
+        {
+          title: 'Деление средостения (горизонтальной плоскостью на уровне Th4-Th5)',
+          items: ['Верхнее средостение — содержит тимус, дугу аорты с ветвями, трахею, пищевод, верхнюю полую вену', 'Нижнее переднее средостение — между грудиной и перикардом (клетчатка, внутренние грудные сосуды)', 'Нижнее среднее средостение — содержит сердце в перикарде, корень легких, диафрагмальные нервы', 'Нижнее заднее средостение — между перикардом и позвоночником (грудная аорта, пищевод, блуждающие нервы, грудной проток)']
+        }
+      ],
+      pills: [
+        { label: 'Разделитель Th4-Th5', text: 'Уровень угла грудины (Людовика) и бифуркации трахеи' },
+        { label: 'Заднее средостение', text: 'Главный тракт проведения крупных сосудов и пищевода' }
+      ],
+      tip: 'На муляже грудной клетки мысленно проведите плоскость от угла грудины назад. Покажите органы выше нее (верхнее) и ниже нее (нижнее).'
+    }
+  },
+  {
+    sec: 2, n: 24,
+    title: 'Почка: макростроение, оболочки и фиксация',
+    tags: ['Почка', 'Мочевыделение'],
+    answer: {
+      def: 'Почка (ren / nephros) — парный паренхиматозный орган мочеобразования, расположенный в ретроперитонеальном пространстве поясничной области.',
+      blocks: [
+        {
+          title: 'Три оболочки почки (изнутри наружу)',
+          items: ['Фиброзная капсула (capsula fibrosa) — тонкая гладкая пластинка, легко снимается в норме', 'Жировая капсула (capsula adiposa) — паранефральная клетчатка, толще на задней поверхности органа', 'Почечная фасция (fascia renalis) — состоит из пред- и позадипочечного листков, фиксирует орган к фасциям мышц']
+        },
+        {
+          title: 'Макростроение на разрезе',
+          items: ['Корковое вещество (cortex renalis) — периферический слой (~4 мм), заходит между пирамидами в виде почечных столбов (columnae renales)', 'Мозговое вещество (medulla renalis) — представлено почечными пирамидами (pyramides renales)', 'Почечные сосочки (papillae renales) открываются в малые почечные чашки']
+        }
+      ],
+      pills: [
+        { label: 'Фиксирующий аппарат', text: 'Почечное ложе (мышцы), оболочки, почечная ножка, внутрибрюшное давление' },
+        { label: 'Ворота почки', text: 'Hilum renale (медиальный край): спереди назад лежат Вена, Артерия, Лоханка (В.А.Л.)' }
+      ],
+      tip: 'Запомните топографию ворот почки: спереди назад элементы идут в порядке В.А.Л. (Вена, Артерия, Лоханка). Это часто спрашивают на практике!'
+    }
+  },
+  {
+    sec: 2, n: 25,
+    title: 'Чашечно-лоханочный комплекс почки: мочевыводящие пути',
+    tags: ['Почка', 'Моча'],
+    answer: {
+      def: 'Чашечно-лоханочная система осуществляет сбор вторичной мочи из сосочковых протоков пирамид и проведение ее в мочеточник.',
+      blocks: [
+        {
+          title: 'Элементы чашечно-лоханочной системы',
+          items: ['Малые почечные чашки (calices renales minores) — охватывают 1-3 почечных сосочка (всего 7-8 штук)', 'Большие почечные чашки (calices renales majores) — образуются при слиянии малых чашек (обычно 2-3 штуки: верхняя, средняя, нижняя)', 'Почечная лоханка (pelvis renalis) — воронкообразное расширение, образуется слиянием больших чашек, сужается и переходит в мочеточник']
+        },
+        {
+          title: 'Формы лоханок',
+          items: ['Ампулярная форма — одна большая широкая лоханка, малые чашки открываются почти сразу в нее', 'Ветвистая форма — длинные большие чашки, лоханка выражена слабо', 'Смешанная форма — промежуточный вариант строения']
+        }
+      ],
+      pills: [
+        { label: 'Формирование мочи', text: 'Моча капает из сосочков пирамид в малые чашки непрерывно' },
+        { label: 'Формы лоханки', text: 'Важны для рентгеноанатомии (урографии)' }
+      ],
+      tip: 'На распиле почки покажите воронку лоханки, выходящую из почечной пазухи (sinus renalis), и продемонстрируйте место перехода лоханки в тонкую трубку мочеточника.'
+    }
+  },
+  {
+    sec: 2, n: 26,
+    title: 'Мочеточник: части, сужения и строение стенки',
+    tags: ['Мочеточник', 'Топография'],
+    answer: {
+      def: 'Мочеточник (ureter) — парный трубчатый орган длиной 25-30 см, проводящий мочу из лоханки почки в мочевой пузырь. Лежит ретроперитонеально.',
+      blocks: [
+        {
+          title: 'Три топографические части мочеточника',
+          items: ['Брюшная часть (pars abdominalis) — идет вниз по большой поясничной мышце до пограничной линии таза', 'Тазовая часть (pars pelvina) — опускается в полость малого таза, пересекает подвздошные сосуды', 'Внутристеночная часть (pars intramuralis) — косо прободает стенку мочевого пузыря на протяжении 1.5-2 см']
+        },
+        {
+          title: 'Три анатомических сужения (места застревания камней)',
+          items: ['Первое сужение — у места перехода почечной лоханки в мочеточник (лоханочно-мочеточниковый сегмент)', 'Второе сужение — при переходе брюшной части в тазовую (перекрест с подвздошными сосудами)', 'Третье сужение — во внутристеночной части внутри стенки мочевого пузыря']
+        }
+      ],
+      pills: [
+        { label: 'Перекрест у женщин', text: 'Тазовая часть проходит под маточной артерией (опасно при операциях!)' },
+        { label: 'Стенка органа', text: 'Слизистая (переходный эпителий), мышечная (слои гладких мышц), адвентиция' }
+      ],
+      tip: 'Запомните три сужения мочеточника. На муляжах таза покажите косой ход мочеточника сквозь заднюю стенку мочевого пузыря.'
+    }
+  },
+  {
+    sec: 2, n: 27,
+    title: 'Мочевой пузырь: строение, мочепузырный треугольник',
+    tags: ['Мочевой пузырь', 'Таз'],
+    answer: {
+      def: 'Мочевой пузырь (vesica urinaria) — полый мышечный орган для накопления мочи емкостью 250-500 мл. Расположен в полости малого таза за лобковым симфизом.',
+      blocks: [
+        {
+          title: 'Анатомические части пузыря',
+          items: ['Верхушка (apex vesicae) — обращена вверх и вперед к передней брюшной стенке', 'Тело (corpus vesicae) — средняя, наибольшая подвижная часть органа', 'Дно (fundus vesicae) — обращено вниз и назад, наименее подвижно', 'Шейка (collum vesicae) — суженная нижняя часть, переходящая в мочеиспускательный канал']
+        },
+        {
+          title: 'Мочепузырный треугольник Льето (trigonum vesicae)',
+          items: ['Участок слизистой оболочки в области дна пузыря', 'Границы: три отверстия — два устья мочеточников и внутреннее отверстие уретры', 'Здесь слизистая оболочка плотно сращена с мышечной, поэтому складки полностью отсутствуют независимо от наполнения пузыря']
+        }
+      ],
+      pills: [
+        { label: 'Брюшина', text: 'Пустой — экстраперитонеально; наполненный — мезоперитонеально (поднимается выше лобка)' },
+        { label: 'm. detrusor vesicae', text: 'Мышца, выталкивающая мочу (сложная трехслойная гладкая мышца стенки)' }
+      ],
+      tip: 'На вскрытом муляже мочевого пузыря найдите на дне гладкую треугольную площадку без складок. Это треугольник Льето — важнейшая зона для цистоскопии.'
+    }
+  },
+  {
+    sec: 2, n: 28,
+    title: 'Яичко и придаток: строение, семенные канальцы',
+    tags: ['Яичко', 'Мужской таз'],
+    answer: {
+      def: 'Яичко (testis / orchis) — парная мужская половая железа, расположенная в мошонке. Выполняет экзокринную (сперматогенез) и эндокринную (выработка тестостерона) функции.',
+      blocks: [
+        {
+          title: 'Строение яичка',
+          items: ['Покрыто плотной фиброзной белочной оболочкой (tunica albuginea)', 'На заднем крае белочная оболочка вдается внутрь, образуя средостение яичка (mediastinum testis)', 'От средостения отходят перегородочки (septula), делящие орган на 200-300 долек (lobuli testis)']
+        },
+        {
+          title: 'Канальцы яичка и придаток',
+          items: ['Внутри долек лежат извитые семенные канальцы (tubuli seminiferi contorti) — место выработки сперматозоидов', 'Они переходят в прямые канальцы, формируют сеть яичка (rete testis) в средостении', 'Из сети выходят выносящие канальцы, направляющиеся в придаток яичка (epididymis)', 'Придаток имеет головку, тело и хвост, переходящий в семявыносящий проток']
+        }
+      ],
+      pills: [
+        { label: 'Клетки Лейдига', text: 'Лежат в интерстиции между канальцами, секретируют тестостерон' },
+        { label: 'Сперматогенез', text: 'Происходит в извитых канальцах при температуре на 1-2°C ниже температуры тела' }
+      ],
+      tip: 'Покажите на препарате яичка придаток, лежащий вдоль его заднего края. Проследите, как хвост придатка круто изгибается вверх, превращаясь в плотный шнурок — ductus deferens.'
+    }
+  },
+  {
+    sec: 2, n: 29,
+    title: 'Семявыносящий проток, семенные пузырьки, предстательная железа',
+    tags: ['Простата', 'Мужские органы'],
+    answer: {
+      def: 'Мужские внутренние половые органы обеспечивают созревание, проведение и выведение семенной жидкости.',
+      blocks: [
+        {
+          title: 'Семявыносящий проток (ductus deferens) и пузырьки',
+          items: ['Длина около 50 см, имеет очень толстую мышечную стенку (на ощупь как плотная нить)', 'Проходит в составе семенного канатика через паховый канал в полость таза', 'Сливается с протоком семенного пузырька (glandula seminalis), образуя семявыбрасывающий проток (ductus ejaculatorius)']
+        },
+        {
+          title: 'Предстательная железа (prostata)',
+          items: ['Мышечно-железистый орган, охватывает шейку мочевого пузыря и начальный отдел уретры', 'Имеет основание, верхушку и две доли, соединенные перешейком', 'Вырабатывает секрет, входящий в состав спермы, и выполняет роль сфинктера']
+        }
+      ],
+      pills: [
+        { label: 'Семявыбрасывающий проток', text: 'Ductus ejaculatorius прободает простату и открывается в предстательную часть уретры' },
+        { label: 'Пальпация простаты', text: 'Осуществляется через переднюю стенку прямой кишки' }
+      ],
+      tip: 'На сагиттальном распиле мужского таза покажите простату — она лежит прямо под мочевым пузырем, и сквозь нее вертикально проходит мочеиспускательный канал.'
+    }
+  },
+  {
+    sec: 2, n: 30,
+    title: 'Яичник: строение, топография, связочный аппарат',
+    tags: ['Яичник', 'Женский таз'],
+    answer: {
+      def: 'Яичник (ovarium) — парная женская половая железа смешанной секреции. Расположен на латеральной стенке малого таза в фоссе яичника. Покрыт зародышевым эпителием (не брюшиной).',
+      blocks: [
+        {
+          title: 'Строение яичника',
+          items: ['Имеет две поверхности (медиальную и латеральную) и два края: свободный и брыжеечный (ворота яичника)', 'На разрезе выделяют корковое вещество (cortex) с фолликулами на разных стадиях развития и мозговое вещество (medulla) с сосудами']
+        },
+        {
+          title: 'Связочный аппарат яичника',
+          items: ['Собственная связка яичника (lig. ovarii proprium) — идет от маточного конца яичника к углу матки', 'Связка, подвешивающая яичник (lig. suspensorium ovarii / воронкотазовая) — идет от трубного конца к стенке таза, содержит яичниковую артерию и вену', 'Брыжейка яичника (mesovarium) — дупликатура брюшины от широкой связки матки']
+        }
+      ],
+      pills: [
+        { label: 'Положение яичника', text: 'Интраперитонеальное, но сам орган брюшиной не покрыт (голый листок фасции)' },
+        { label: 'Фолликулы', text: 'В корковом веществе видны зрелые Граафовы пузырьки и желтые тела (corpora lutea)' }
+      ],
+      tip: 'Покажите на муляже женского таза яичник позади широкой связки матки. Четко продемонстрируйте плотную собственную связку, соединяющую его с маткой.'
+    }
+  },
+  {
+    sec: 2, n: 31,
+    title: 'Маточная труба: части, отношение к брюшине',
+    tags: ['Маточная труба', 'Женский таз'],
+    answer: {
+      def: 'Маточная труба (tuba uterina / salpinx) — парный трубчатый орган, служащий для проведения яйцеклетки в полость матки и являющийся основным местом оплодотворения.',
+      blocks: [
+        {
+          title: 'Четыре анатомические части трубы (от яичника к матке)',
+          items: ['Воронка (infundibulum) — расширенный конец, несущий бахромки (fimbriae), окружающие яичник', 'Ампула (ampulla tubae uterinae) — самая длинная и широкая извитая часть (место оплодотворения)', 'Перешеек (isthmus) — суженная прямая часть, близкая к матке', 'Маточная часть (pars uterina) — проходит внутри мышечной стенки матки и открывается в ее полость']
+        },
+        {
+          title: 'Отношение к брюшине',
+          items: ['Покрыта брюшиной интраперитонеально со всех сторон', 'Верхний край широкой связки матки образует брыжейку маточной трубы (mesosalpinx)', 'Через маточную трубу полость брюшины у женщин сообщается с внешней средой (путь для восходящей инфекции)']
+        }
+      ],
+      pills: [
+        { label: 'Fimbria ovarica', text: 'Самая длинная бахромка воронки, прикрепляющаяся к яичнику' },
+        { label: 'Сообщение', text: 'Остиум брюшной (в воронке) ↔ Остиум маточный (в стенке матки)' }
+      ],
+      tip: 'Покажите бахромки воронки трубы на муляже. Обязательно отметьте, что они как бы «обнимают» яичник для улавливания яйцеклетки при овуляции.'
+    }
+  },
+  {
+    sec: 2, n: 32,
+    title: 'Матка: строение, части, слои стенки, связки',
+    tags: ['Матка', 'Женский таз'],
+    answer: {
+      def: 'Матка (uterus / metra / hystera) — непарный гладкомышечный орган для вынашивания плода, расположенный в полости малого таза между мочевым пузырем и прямой кишкой.',
+      blocks: [
+        {
+          title: 'Части матки и слои стенки',
+          items: ['Дно матки (fundus) — выпуклая часть выше уровня впадения маточных труб', 'Тело матки (corpus) — средняя треугольная часть органа', 'Шейка матки (cervix) — нижний суженный отдел, делящийся на надвлагалищную и влагалищную части', 'Слои стенки: эндометрий (слизистая), миометрий (мощный мышечный слой), периметрий (серозная оболочка)']
+        },
+        {
+          title: 'Связочный аппарат матки',
+          items: ['Широкая связка матки (lig. latum uteri) — дупликатура брюшины во фронтальной плоскости', 'Круглая связка матки (lig. teres uteri) — идет от угла матки через паховый канал к лобку', 'Кардинальные связки (ligg. cardinalia) — в основании широкой связки, фиксируют шейку к стенкам таза']
+        }
+      ],
+      pills: [
+        { label: 'Положение матки', text: 'Anteflexio (наклон тела вперед относительно шейки) и anteversio (наклон всего органа вперед относительно оси таза)' },
+        { label: 'Периметрий', text: 'Брюшина покрывает матку интраперитонеально (кроме шейки спереди)' }
+      ],
+      tip: 'Покажите нормальное положение матки на сагиттальном срезе женского таза — она «лежит» на мочевом пузыре (антефлексио). Продемонстрируйте ход круглой связки вперед.'
+    }
+  },
+
+  // === РАЗДЕЛ III ===
+  {
+    sec: 3, n: 33,
+    title: 'Сердце: внешнее строение, камеры, борозды',
+    tags: ['Сердце', 'Анатомия'],
+    answer: {
+      def: 'Сердце (cor) — полый четырехкамерный мышечный орган конусовидной формы, обеспечивающий кровообращение. Расположен в нижнем среднем средостении.',
+      blocks: [
+        {
+          title: 'Внешние ориентиры сердца',
+          items: ['Основание сердца (basis cordis) — обращено вверх, назад и вправо, образовано предсердиями и крупными сосудами', 'Верхушка сердца (apex cordis) — свободный закругленный конец, направлен вниз, вперед и влево (проекция в 5-м межреберье)', 'Поверхности: грудино-реберная (передняя) и диафрагмальная (нижняя)']
+        },
+        {
+          title: 'Борозды сердца (границы камер)',
+          items: ['Венечная борозда (sulcus coronarius) — отделяет предсердия от желудочков, проходит поперечно', 'Передняя и нижняя межжелудочковые борозды (sulcus interventricularis anterior / inferior) — отделяют правый желудочек от левого, сходятся у верхушки']
+        }
+      ],
+      pills: [
+        { label: 'Камеры', text: 'Правое и левое предсердия (atria), правый и левый желудочки (ventriculi)' },
+        { label: 'Ушки предсердий', text: 'Auricula dextra / sinistra — выступающие передние слепые мешки предсердий' }
+      ],
+      tip: 'На муляже сердца покажите венечную борозду, в которой лежат венечные артерии, и межжелудочковые борозды, спускающиеся к верхушке.'
+    }
+  },
+  {
+    sec: 3, n: 34,
+    title: 'Правое предсердие и правый желудочек: строение',
+    tags: ['Сердце', 'Камеры'],
+    answer: {
+      def: 'Правые камеры сердца принимают венозную кровь из большого круга кровообращения и нагнетают ее в малый круг (легочный ствол).',
+      blocks: [
+        {
+          title: 'Правое предсердие (atrium dextrum)',
+          items: ['Впадают верхняя полую вена (v. cava superior) и нижняя полая вена (v. cava inferior)', 'Впадает венечный синус сердца (sinus coronarius) — собственные вены сердца', 'На межпредсердной перегородке видна овальная ямка (fossa ovalis) — заросшее овальное отверстие плода', 'Стенка внутри гладкая, но в ушке есть гребенчатые мышцы (mm. pectinati)']
+        },
+        {
+          title: 'Правый желудочек (ventriculus dexter)',
+          items: ['Отделен от предсердия правым предсердно-желудочковым клапаном (valva atrioventricularis dextra / трехстворчатый / трикуспидальный)', 'Стенка покрыта мясистыми трабекулами (trabeculae carneae) и содержит сосочковые мышцы (mm. papillares)', 'От сосочковых мышц к створкам клапана идут сухожильные хорды (chordae tendineae)', 'Выходной отдел — артериальный конус (conus arteriosus), переходящий в легочный ствол (truncus pulmonalis)']
+        }
+      ],
+      pills: [
+        { label: 'Трикуспидальный клапан', text: 'Имеет переднюю, заднюю и перегородочную створки' },
+        { label: 'Клапан легочного ствола', text: 'Valva trunci pulmonalis — состоит из 3-х полулунных заслонок' }
+      ],
+      tip: 'На вскрытом муляже правого желудочка покажите сосочковые мышцы и натянутые нити сухожильных хорд, удерживающие створки трехстворчатого клапана.'
+    }
+  },
+  {
+    sec: 3, n: 35,
+    title: 'Левое предсердие и левый желудочек: строение',
+    tags: ['Сердце', 'Камеры'],
+    answer: {
+      def: 'Левые камеры сердца принимают артериальную кровь из легочных вен и распределяют ее по всему организму через аорту (большой круг).',
+      blocks: [
+        {
+          title: 'Левое предсердие (atrium sinistrum)',
+          items: ['В заднюю стенку впадают 4 легочные вены (vv. pulmonales) — по две от каждого легкого, несущие артериальную кровь', 'Внутренняя стенка гладкая, гребенчатые мышцы развиты только в левом ушке']
+        },
+        {
+          title: 'Левый желудочек (ventriculus sinister)',
+          items: ['Сообщается с предсердием через левый предсердно-желудочковый клапан (valva atrioventricularis sinistra / двухстворчатый / митральный)', 'Стенка миокарда левого желудочка в 3 раза толще стенки правого, так как он преодолевает высокое сопротивление сосудов тела', 'Содержит две мощные сосочковые мышцы (переднюю и заднюю) и сухожильные хорды', 'Выходное отверстие ведет в аорту, защищено клапаном аорты (valva aortae)']
+        }
+      ],
+      pills: [
+        { label: 'Митральный клапан', text: 'Имеет две створки: переднюю и заднюю' },
+        { label: 'Клапан аорты', text: 'Состоит из 3-х полулунных заслонок, содержит узелки Аранция и синусы Вальсальвы' }
+      ],
+      tip: 'Обратите внимание экзаменатора на толщину стенки левого желудочка по сравнению с правым. Это главный признак, позволяющий безошибочно определить сторону сердца на поперечном разрезе.'
+    }
+  },
+  {
+    sec: 3, n: 36,
+    title: 'Клапанный аппарат сердца: строение и фиксация створок',
+    tags: ['Сердце', 'Клапаны'],
+    answer: {
+      def: 'Клапаны сердца обеспечивают строго однонаправленный ток крови: из предсердий в желудочки, из желудочков в магистральные сосуды.',
+      blocks: [
+        {
+          title: 'Предсердно-желудочковые (атриовентрикулярные) клапаны',
+          items: ['Правый — трехстворчатый, левый — двухстворчатый (митральный)', 'Состоят из фиброзного кольца (основание), створок (cuspis), сухожильных хорд и сосочковых мышц', 'Створки представляют собой дупликатуру эндокарда', 'Во время систолы желудочков хорды натягиваются сосочковыми мышцами, препятствуя выворачиванию створок в предсердия']
+        },
+        {
+          title: 'Полулунные клапаны (клапан аорты и легочного ствола)',
+          items: ['Расположены в основании сосудов, состоят из 3-х полулунных заслонок (valvulae semilunares) в форме кармашков', 'Захлопываются во время диастолы под давлением обратного тока крови из сосудов, изолируя желудочки']
+        }
+      ],
+      pills: [
+        { label: 'Систола желудочков', text: 'АВ-клапаны закрыты (удерживаются хордами), Полулунные — открыты' },
+        { label: 'Диастола желудочков', text: 'АВ-клапаны открыты (кровь течет вниз), Полулунные — закрыты кармашками' }
+      ],
+      tip: 'Покажите на клапанах аорты полулунные заслонки. Объясните, что они не имеют сухожильных нитей, так как закрываются пассивно за счет давления крови.'
+    }
+  },
+  {
+    sec: 3, n: 37,
+    title: 'Проводящая система сердца: узлы, пучки, функция',
+    tags: ['Сердце', 'Проводящая система'],
+    answer: {
+      def: 'Проводящая система сердца состоит из специализированных атипичных мышечных клеток (кардиомиоцитов), которые генерируют и проводят электрические импульсы для автоматизма и координации сокращений сердца.',
+      blocks: [
+        {
+          title: 'Анатомические элементы системы (по порядку хода импульса)',
+          items: ['Синусно-предсердный узел (nodus sinoatrialis / узел Киса-Флека) — пейсмейкер I порядка. Лежит в стенке правого предсердия у устья верхней полой вены. Задает нормальный ритм сердца', 'Предсердно-желудочковый узел (nodus atrioventricularis / узел Ашоффа-Тавара) — пейсмейкер II порядка. Расположен в нижней части межпредсердной перегородки', 'Предсердно-желудочковый пучок (пучок Гиса) — отходит от АВ-узла, проходит сквозь фиброзный скелет в межжелудочковую перегородку', 'Ножки пучка Гиса (правая и левая) — спускаются по сторонам перегородки к желудочкам', 'Волокна Пуркинье — концевые разветвления ножек в миокарде желудочков']
+        }
+      ],
+      pills: [
+        { label: 'Синусовый ритм', text: 'Генерирует 60-80 импульсов в минуту в покое' },
+        { label: 'АВ-задержка', text: 'Обеспечивает поочередное сокращение предсердий, а затем желудочков' }
+      ],
+      tip: 'Назовите все элементы строго последовательно. На муляже вскрытого правого предсердия покажите примерную проекцию синусного узла между ушком и устьем верхней полой вены.'
+    }
+  },
+  {
+    sec: 3, n: 38,
+    title: 'Артерии сердца: правая и левая венечные артерии, ветви',
+    tags: ['Сердце', 'Сосуды'],
+    answer: {
+      def: 'Кровоснабжение сердца осуществляется правой и левой венечными (коронарными) артериями (a. coronaria dextra / sinistra), которые отходят от луковицы аорты сразу выше полулунных клапанов.',
+      blocks: [
+        {
+          title: 'Левая венечная артерия (arteria coronaria sinistra)',
+          items: ['Отходит от левого синуса аорты, проходит в венечной борозде левее легочного ствола', 'Почти сразу делится на две крупные ветви:', '1. Передняя межжелудочковая ветвь (ramus interventricularis anterior / LAD) — спускается по одноименной борозде к верхушке сердца', '2. Огибающая ветвь (ramus circumflexus) — огибает левый край сердца по венечной борозде на заднюю стенку']
+        },
+        {
+          title: 'Правая венечная артерия (arteria coronaria dextra)',
+          items: ['Отходит от правого синуса аорты, ложится в венечную борозду справа', 'Огибает правый край сердца и отдает на диафрагмальной поверхности заднюю межжелудочковую ветвь (ramus interventricularis posterior), идущую к верхушке']
+        }
+      ],
+      pills: [
+        { label: 'Критическая ветвь', text: 'Передняя межжелудочковая ветвь левой коронарной артерии чаще всего поражается при инфаркте миокарда' },
+        { label: 'Анастомозы', text: 'Ветви артерий анастомозируют в области верхушки сердца и венечной борозды' }
+      ],
+      tip: 'Покажите на муляже сердца места отхождения венечных артерий из пазух аорты. Проследите ход передней межжелудочковой ветви левой артерии по передней стенке.'
+    }
+  },
+  {
+    sec: 3, n: 39,
+    title: 'Вены сердца и венечный синус',
+    tags: ['Сердце', 'Вены'],
+    answer: {
+      def: 'Отток венозной крови от тканей сердца происходит преимущественно в венечный синус (sinus coronarius), лежащий в венечной борозде на задней поверхности сердца и открывающийся в правое предсердие.',
+      blocks: [
+        {
+          title: 'Основные притоки венечного синуса',
+          items: ['Большая вена сердца (v. cordis magna) — поднимается по передней межжелудочковой борозде, огибает левый край сердца и переходит в синус', 'Средняя вена сердца (v. cordis media) — проходит по задней (нижней) межжелудочковой борозде напрямую в синус', 'Малая вена сердца (v. cordis parva) — ложится в правую часть венечной борозды и впадает в синус справа']
+        },
+        {
+          title: 'Вены, впадающие минуя синус',
+          items: ['Передние вены сердца (vv. cordis anteriores) — собирают кровь от передней стенки правого желудочка, открываются сразу в правое предсердие', 'Наименьшие вены сердца (Тебезиевы вены / vv. cordis minimae) — микроскопические вены, открываются точечными отверстиями прямо во все камеры сердца (преимущественно правые)']
+        }
+      ],
+      pills: [
+        { label: 'Sinus coronarius', text: 'Широкая короткая трубка на задней стенке сердца под левым предсердием' },
+        { label: 'Отверстие синуса', text: 'Ostium sinus coronarii в правом предсердии имеет небольшую заслонку слизистой' }
+      ],
+      tip: 'Разверните муляж сердца задней поверхностью к себе. Найдите широкую синеватую трубку в горизонтальной борозде под левым предсердием — это венечный синус.'
+    }
+  },
+  {
+    sec: 3, n: 40,
+    title: 'Перикард: строение, полость и пазухи',
+    tags: ['Пекция', 'Сердце'],
+    answer: {
+      def: 'Перикард (pericardium / околосердечная сумка) — замкнутый мешок, окружающий сердце и начальные отделы крупных сосудов.',
+      blocks: [
+        {
+          title: 'Слои перикарда',
+          items: ['Волокнистый перикард (pericardium fibrosum) — наружный плотный фиброзный слой, переходящий на адвентицию сосудов и фиксирующийся к диафрагме', 'Серозный перикард (pericardium serosum) — внутренний слой, делящийся на два листка:', '1. Париетальный листок — выстилает фиброзный перикард изнутри', '2. Висцеральный листок (эпикард) — плотно покрывает миокард сердца со всех сторон']
+        },
+        {
+          title: 'Перикардиальная полость и ее пазухи',
+          items: ['Перикардиальная полость (cavitas pericardialis) — щель между париетальным и висцеральным листками с серозной жидкостью', 'Поперечная пазуха (sinus transversus pericardii) — позади восходящей аорты и легочного ствола (можно провести палец на операции)', 'Косая пазуха (sinus obliquus pericardii) — слепой мешок на задней стенке сердца между легочными венами и нижней полой веной']
+        }
+      ],
+      pills: [
+        { label: 'Тампонада сердца', text: 'Быстрое скопление жидкости/крови в полости перикарда, сдавливающее сердце' },
+        { label: 'Эпикард', text: 'Висцеральный листок серозного перикарда = наружный слой стенки сердца' }
+      ],
+      tip: 'Объясните топографию поперечной пазухи: она разграничивает приток (вены) от оттока (артерии) у основания сердца, что критически важно для кардиохирургов.'
+    }
+  },
+  {
+    sec: 3, n: 41,
+    title: 'Аорта: отделы, дуга аорты и ее ветви',
+    tags: ['Аорта', 'Сосуды'],
+    answer: {
+      def: 'Аорта (aorta) — главный магистральный артериальный сосуд большого круга кровообращения. Начинается из левого желудочка сердца на уровне 3-го межреберья.',
+      blocks: [
+        {
+          title: 'Три анатомических отдела аорты',
+          items: ['Восходящая аорта (aorta ascendens) — выходит из сердца, имеет расширение (луковицу аорты), отдает левую и правую венечные артерии', 'Дуга аорты (arcus aortae) — перегибается назад и влево через левый главный бронх на уровне Th4', 'Нисходящая аорта (aorta descendens) — идет вниз в заднем средостении (грудная часть), проходит через диафрагму в брюшную полость (брюшная часть). Заканчивается на уровне L4 бифуркацией']
+        },
+        {
+          title: 'Три ветви дуги аорты (справа налево)',
+          items: ['1. Плечеголовной ствол (truncus brachiocephalicus) — делится на правую общую сонную и правую подключичную артерии', '2. Левая общая сонная артерия (a. carotis communis sinistra) — направляется на шею', '3. Левая подключичная артерия (a. subclavia sinistra) — направляется к левой верхней конечности']
+        }
+      ],
+      pills: [
+        { label: 'Бифуркация аорты', text: 'Разделение на уровне L4 на левую и правую общие подвздошные артерии' },
+        { label: 'Перекрест дуги', text: 'Дуга аорты перекидывается строго спереди назад через левый главный бронх' }
+      ],
+      tip: 'Покажите на муляже ветви дуги аорты строго справа налево: Плечеголовной ствол → Левая общая сонная → Левая подключичная. Запомните этот порядок наизусть!'
+    }
+  },
+  {
+    sec: 3, n: 42,
+    title: 'Система верхней полой вены: формирование и притоки',
+    tags: ['Вены', 'Кровообращение'],
+    answer: {
+      def: 'Верхняя полая вена (vena cava superior) — короткий (5-7 см) широкий сосуд, собирающий венозную кровь от головы, шеи, верхних конечностей и стенок грудной полости. Впадает в правое предсердие.',
+      blocks: [
+        {
+          title: 'Формирование верхней полой вены',
+          items: ['Образуется слиянием правой и левой плечеголовных вен (vv. brachiocephalicae dextra et sinistra) позади сочленения 1-го правого ребра с грудиной', 'Каждая плечеголовная вена образуется слиянием внутренней яремной вены (v. jugularis interna) и подключичной вены (v. subclavia) — этот угол называют венозным углом Пирогова']
+        },
+        {
+          title: 'Крупный приток полой вены',
+          items: ['Непарная вена (v. azygos) — впадает в верхнюю полую вену сзади прямо над областью корня правого легкого, принося кровь от межреберных вен стенки груди']
+        }
+      ],
+      pills: [
+        { label: 'Венозный угол', text: 'Угол Пирогова — место впадения лимфатических протоков (грудного слева)' },
+        { label: 'Клапаны', text: 'Верхняя полая вена и ее главные притоки не имеют клапанов' }
+      ],
+      tip: 'Покажите на муляже сосудов груди, как левая плечеголовная вена идет косо слева направо перед ветвями аорты, чтобы слиться с правой и образовать верхнюю полую вену.'
+    }
+  },
+  {
+    sec: 3, n: 43,
+    title: 'Система нижней полой вены: формирование, притоки',
+    tags: ['Вены', 'Кровообращение'],
+    answer: {
+      def: 'Нижняя полая вена (vena cava inferior) — самая крупная вена организма, собирающая кровь от нижних конечностей, стенок и органов таза и брюшной полости. Впадает в правое предсердие.',
+      blocks: [
+        {
+          title: 'Формирование и топография вены',
+          items: ['Образуется на уровне L4-L5 поясничных позвонков при слиянии правой и левой общих подвздошных вен (vv. iliacae communes) справа от аорты', 'Проходит вверх по задней стенке брюшной полости ретроперитонеально, ложится в одноименную борозду печени', 'Проходит сквозь отверстие диафрагмы (foramen venae cavae) в грудную полость и сразу проникает в правое предсердие']
+        },
+        {
+          title: 'Главные висцеральные притоки',
+          items: ['Почечные вены (vv. renales) — левая почечная вена длиннее правой, пересекает аорту спереди', 'Печеночные вены (vv. hepaticae) — 3-4 короткие вены, впадают в месте прилежания вены к печени, выносят кровь, очищенную в печени', 'Яичковые/яичниковые вены (vv. testiculares/ovaricae) — правая впадает напрямую в нижнюю полую вену, а левая — под прямым углом в левую почечную вену!']
+        }
+      ],
+      pills: [
+        { label: 'Особенность левой яичковой вены', text: 'Впадает в левую почечную вену (анатомическая предпосылка к левостороннему варикоцеле)' },
+        { label: 'Стенка', text: 'Содержит хорошо развитый слой гладких мышц в адвентиции для продвижения крови вверх' }
+      ],
+      tip: 'Покажите на муляже брюшной полости нижнюю полую вену, лежащую строго СПРАВА от брюшной аорты. Продемонстрируйте впадение крупных почечных вен.'
+    }
+  },
+  {
+    sec: 3, n: 44,
+    title: 'Воротная вена печени: формирование, притоки, функция',
+    tags: ['Воротная вена', 'Печень'],
+    answer: {
+      def: 'Воротная вена (vena portae hepatis) — крупный венозный ствол, собирающий кровь от всех непарных органов брюшной полости (тракт от желудка до верхней части прямой кишки, селезенка, поджелудочная). Направляет эту кровь в печень для детоксикации.',
+      blocks: [
+        {
+          title: 'Формирование воротной вены (корни воротной вены)',
+          items: ['Образуется позади головки поджелудочной железы при слиянии трех крупных вен:', '1. Верхняя брыжеечная вена (v. mesenterica superior) — от тонкой и части толстой кишки', '2. Селезеночная вена (v. splenica/lienalis) — от селезенки, желудка и поджелудочной железы', '3. Нижняя брыжеечная вена (v. mesenterica inferior) — от сигмовидной и прямой кишки (часто впадает сначала в селезеночную вену)']
+        },
+        {
+          title: 'Топография ствола вены',
+          items: ['От места формирования идет вверх, ложится в толщу печеночно-дуоденальной связки малого сальника', 'Входит в ворота печени (porta hepatis) и разделяется на правую и левую ветви внутри паренхимы']
+        }
+      ],
+      pills: [
+        { label: 'Корни воротной вены', text: 'Верхняя брыжеечная, селезеночная, нижняя брыжеечная вены' },
+        { label: 'Связка', text: 'В lig. hepatoduodenale вена лежит сзади от холедоха и печеночной артерии' }
+      ],
+      tip: 'Покажите воротную вену на муляже в составе печеночно-дуоденальной связки. Вспомните правило D.A.V. (Проток — справа, Артерия — слева, Вена — сзади между ними).'
+    }
+  },
+  {
+    sec: 3, n: 45,
+    title: 'Лимфатическая система: грудной проток, формирование',
+    tags: ['Лимфа', 'Сосуды'],
+    answer: {
+      def: 'Лимфатическая система — дополнительное русло венозной системы, обеспечивающее отток тканевой жидкости, всасывание жиров и иммунную защиту.',
+      blocks: [
+        {
+          title: 'Грудной проток (ductus thoracicus) — главный лимфатический сосуд',
+          items: ['Собирает 3/4 всей лимфы тела (от нижних конечностей, таза, брюшной полости, левой половины груди, головы и левой руки)', 'Формирование: образуется на уровне Th12-L2 при слиянии правого и левого поясничных лимфатических стволов', 'Начало протока часто имеет расширение — цистерну грудного протока (cisterna chyli)']
+        },
+        {
+          title: 'Ход и место впадения протока',
+          items: ['Проходит из брюшной полости в грудную вместе с аортой через аортальное отверстие диафрагмы', 'Поднимается в заднем средостении справа от аорты, на уровне Th4-Th5 уходит влево', 'Впадает в левый венозный угол Пирогова (место слияния левой внутренней яремной и левой подключичной вен)']
+        }
+      ],
+      pills: [
+        { label: 'Правый лимфатический проток', text: 'Ductus lymphaticus dexter — собирает лимфу только от правой верхней 1/4 тела, впадает в правый венозный угол' },
+        { label: 'Клапаны', text: 'Грудной проток имеет многочисленные полулунные клапаны для предотвращения ретроградного тока лимфы' }
+      ],
+      tip: 'Покажите на схеме или муляже сосудов шеи левый венозный угол Пирогова. Объясните, что именно сюда впадает дуга грудного протока, возвращая лимфу в кровяное русло.'
+    }
+  }
+];
+
+// STATE MANAGEMENT
+let activeSection = 'all';
+let currentQuestionIdx = 0;
+let learnedQuestions = new Set();
+let filteredQuestions = [...QUESTIONS];
+
+// INITIALIZATION
+window.addEventListener('DOMContentLoaded', () => {
+  loadProgress();
+  renderGrid();
+  updateProgressUI();
+});
+
+// RENDER FUNCTION
+function renderGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  filteredQuestions.forEach((q) => {
+    const isLearned = learnedQuestions.has(q.n);
+    const secColor = SECTIONS[q.sec].accent;
+
+    const card = document.createElement('div');
+    card.className = `q-card ${isLearned ? 'answered' : ''}`;
+    card.style.setProperty('--card-accent', secColor);
+    card.setAttribute('data-id', q.n);
+    card.onclick = () => openQuestion(q.n);
+
+    const tagsHtml = q.tags.map(t => `<span class="tag">${t}</span>`).join('');
+
+    card.innerHTML = `
+      <div>
+        <div class="card-num">Вопрос ${q.n} · Раздел ${q.sec}</div>
+        <div class="card-title">${q.title}</div>
+      </div>
+      <div class="card-tags">
+        ${tagsHtml}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// FILTER SECTIONS
+function filterSection(sec, btn) {
+  activeSection = sec;
+  
+  document.querySelectorAll('.section-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  applyFilters();
+}
+
+// INTERACTIVE SEARCH
+function handleSearch() {
+  applyFilters();
+}
+
+function applyFilters() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  
+  filteredQuestions = QUESTIONS.filter(q => {
+    const matchesSection = (activeSection === 'all' || q.sec.toString() === activeSection);
+    const matchesSearch = !query || 
+      q.title.toLowerCase().includes(query) || 
+      q.tags.some(t => t.toLowerCase().includes(query));
+    
+    return matchesSection && matchesSearch;
+  });
+
+  renderGrid();
+}
+
+// MODAL LOGIC
+function openQuestion(qNum) {
+  const qIdx = QUESTIONS.findIndex(q => q.n === qNum);
+  if (qIdx === -1) return;
+
+  currentQuestionIdx = qIdx;
+  const q = QUESTIONS[qIdx];
+  const secColor = SECTIONS[q.sec].accent;
+
+  const modal = document.getElementById('modal');
+  modal.style.setProperty('--modal-accent', secColor);
+
+  document.getElementById('modalNum').innerText = `Раздел ${q.sec} · Вопрос ${q.n} из 45`;
+  document.getElementById('modalTitle').innerText = q.title;
+
+  // Build body content
+  let bodyHtml = `
+    <div class="answer-section">
+      <div class="definition-box">${q.answer.def}</div>
+    </div>
+  `;
+
+  if (q.answer.blocks && q.answer.blocks.length > 0) {
+    bodyHtml += `<div class="answer-section anatomy-grid">`;
+    q.answer.blocks.forEach(b => {
+      const listItems = b.items.map(item => `<li>${item}</li>`).join('');
+      bodyHtml += `
+        <div class="anatomy-card">
+          <div class="anatomy-card-title">${b.title}</div>
+          <ul>${listItems}</ul>
+        </div>
+      `;
+    });
+    bodyHtml += `</div>`;
+  }
+
+  if (q.answer.pills && q.answer.pills.length > 0) {
+    bodyHtml += `
+      <div class="answer-section">
+        <div class="section-label">Ключевые ориентиры</div>
+        <div class="highlight-row">
+    `;
+    q.answer.pills.forEach(p => {
+      bodyHtml += `
+        <div class="highlight-pill">
+          <strong>${p.label}</strong>
+          ${p.text}
+        </div>
+      `;
+    });
+    bodyHtml += `</div></div>`;
+  }
+
+  if (q.answer.tip) {
+    bodyHtml += `
+      <div class="answer-section">
+        <div class="exam-tip">
+          <div class="exam-tip-icon">💡</div>
+          <div><strong>Совет для демонстрации на муляже:</strong> ${q.answer.tip}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  document.getElementById('modalBody').innerHTML = bodyHtml;
+  updateLearnedButtonState(q.n);
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function updateLearnedButtonState(qNum) {
+  const btn = document.getElementById('learnedBtn');
+  const icon = document.getElementById('learnedIcon');
+  const text = document.getElementById('learnedText');
+
+  if (learnedQuestions.has(qNum)) {
+    btn.classList.add('done');
+    icon.innerText = '✓';
+    text.innerText = 'Изучено';
+  } else {
+    btn.classList.remove('done');
+    icon.innerText = '✓';
+    text.innerText = 'Изучил';
+  }
+}
+
+function markLearned() {
+  const q = QUESTIONS[currentQuestionIdx];
+  if (learnedQuestions.has(q.n)) {
+    learnedQuestions.delete(q.n);
+  } else {
+    learnedQuestions.add(q.n);
+  }
+
+  saveProgress();
+  updateLearnedButtonState(q.n);
+  updateProgressUI();
+  
+  // Re-render only target card state dynamically
+  const card = document.querySelector(`.q-card[data-id="${q.n}"]`);
+  if (card) {
+    if (learnedQuestions.has(q.n)) card.classList.add('answered');
+    else card.classList.remove('answered');
+  }
+}
+
+function navQuestion(dir) {
+  let newIdx = currentQuestionIdx + dir;
+  if (newIdx < 0) newIdx = QUESTIONS.length - 1;
+  if (newIdx >= QUESTIONS.length) newIdx = 0;
+  
+  openQuestion(QUESTIONS[newIdx].n);
+}
+
+function closeModal(e) {
+  if (e.target.id === 'modalOverlay') {
+    closeModalDirect();
+  }
+}
+
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// PROGRESS METRICS & STORAGE
+function updateProgressUI() {
+  const count = learnedQuestions.size;
+  const pct = (count / QUESTIONS.length) * 100;
+  
+  document.getElementById('progressFill').style.width = `${pct}%`;
+  document.getElementById('progressLabel').innerText = `${count} / ${QUESTIONS.length} изучено`;
+}
+
+function saveProgress() {
+  localStorage.setItem('anatomy_learned_ids', JSON.stringify([...learnedQuestions]));
+}
+
+function loadProgress() {
+  const data = localStorage.getItem('anatomy_learned_ids');
+  if (data) {
+    try {
+      learnedQuestions = new Set(JSON.parse(data));
+    } catch(e) {
+      learnedQuestions = new Set();
+    }
+  }
+}
+</script>
+</body>
+</html>
+HTMLEOF
